@@ -14,7 +14,7 @@ type ProfitSharing struct {
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *weixin_shop_pay.QueryOrderParams) (*ReceiversAddResp, error) {
+func (c *ProfitSharing) ReceiversAdd(p *weixin_shop_pay.PayQueryOrder) (*ReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -49,8 +49,8 @@ type ReceiversAddResp struct {
 	Account string `json:"account"` // 接收方账号
 }
 
-// ProfitSharingOrders 请求分账
-func (c *ProfitSharing) ProfitSharingOrders(p *weixin_shop_pay.ProfitSharingOrders) (*OrdersResp, error) {
+// Apply 请求分账
+func (c *ProfitSharing) Apply(p *weixin_shop_pay.ProfitSharingApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -71,7 +71,7 @@ func (c *ProfitSharing) ProfitSharingOrders(p *weixin_shop_pay.ProfitSharingOrde
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output OrdersResp
+	var output ApplyResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -79,14 +79,14 @@ func (c *ProfitSharing) ProfitSharingOrders(p *weixin_shop_pay.ProfitSharingOrde
 	return &output, nil
 }
 
-// OrdersResp .
-type OrdersResp struct {
+// ApplyResp .
+type ApplyResp struct {
 	Type    string `json:"type"`    // 接收方类型
 	Account string `json:"account"` // 接收方账号
 }
 
-// ProfitSharingQuery 分账查询
-func (c *ProfitSharing) ProfitSharingQuery(p *weixin_shop_pay.ProfitSharingQuery) (*QueryResp, error) {
+// Query 分账查询
+func (c *ProfitSharing) Query(p *weixin_shop_pay.ProfitSharingQuery) (*QueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -137,8 +137,8 @@ type QueryResp struct {
 	FinishDescription string `json:"finish_description"` // 分账完结描述
 }
 
-// ProfitSharingQuery 分账查询
-func (c *ProfitSharing) ProfitSharingFinishOrder(p *weixin_shop_pay.ProfitSharingQuery) (*FinishOrderResp, error) {
+// FinishOrder 完结分账
+func (c *ProfitSharing) FinishOrder(p *weixin_shop_pay.ProfitSharingFinishOrder) (*FinishOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

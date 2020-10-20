@@ -1,7 +1,7 @@
 package weixin_shop_pay
 
-// OrderParams 下单参数
-type OrderParams struct {
+// PayOrder 下单
+type PayOrder struct {
 	SpAppID     string `json:"sp_appid"`     // 服务商公众号ID
 	SpMchID     string `json:"sp_mchid"`     // 服务商户号
 	SubAppID    string `json:"sub_appid"`    // 二级商户公众号ID
@@ -16,26 +16,26 @@ type OrderParams struct {
 		ProfitSharing bool  `json:"profit_sharing"` // 是否制定分账
 		SubsidyAmount int64 `json:"subsidy_amount"` // 补差金额
 	} `json:"settle_info"` // 结算信息
-	Amount    *Amount    `json:"amount"`     // 订单金额
-	Payer     *Payer     `json:"payer"`      // 支付者
-	Detail    *Detail    `json:"detail"`     // 优惠功能
-	SceneInfo *SceneInfo `json:"scene_info"` // 场景信息
+	Amount    *PayOrderAmount    `json:"amount"`     // 订单金额
+	Payer     *PayOrderPayer     `json:"payer"`      // 支付者
+	Detail    *PayOrderDetail    `json:"detail"`     // 优惠功能
+	SceneInfo *PayOrderSceneInfo `json:"scene_info"` // 场景信息
 }
 
-// Amount 订单金额
-type Amount struct {
+// PayOrderAmount 订单金额
+type PayOrderAmount struct {
 	Total    int    `json:"total"`    // 订单总金额
 	Currency string `json:"currency"` // 货币类型
 }
 
-// Payer 支付者
-type Payer struct {
+// PayOrderPayer 支付者
+type PayOrderPayer struct {
 	SpOpenid  string `json:"sp_openid"`  // 用户服务标识
 	SubOpenid string `json:"sub_openid"` // 用户子标识
 }
 
-// Detail 优惠功能
-type Detail struct {
+// PayOrderDetail 优惠功能
+type PayOrderDetail struct {
 	CostPrice   int    `json:"cost_price"` // 订单原价
 	InvoiceID   string `json:"invoice_id"` // 商家小票
 	GoodsDetail []struct {
@@ -47,8 +47,8 @@ type Detail struct {
 	} `json:"goods_detail"` // 单品列表
 }
 
-// SceneInfo 场景信息
-type SceneInfo struct {
+// PayOrderSceneInfo 场景信息
+type PayOrderSceneInfo struct {
 	PayerClientIp string `json:"payer_client_ip"` // 用户终端IP
 	DeviceID      string `json:"device_id"`       // 商户端设备号
 	StoreInfo     struct {
@@ -59,15 +59,15 @@ type SceneInfo struct {
 	} `json:"store_info"` // 商户门店信息
 }
 
-// QueryOrderParams 查询订单参数
-type QueryOrderParams struct {
+// PayQueryOrder 查询订单
+type PayQueryOrder struct {
 	SpMchID       string `json:"sp_mchid"`       // 服务商户号
 	SubAppID      string `json:"sub_appid"`      // 二级商户公众号ID
 	TransactionID string `json:"transaction_id"` // 订单号
 }
 
-// EcommerceApplyParams 二级商户进件参数
-type EcommerceApplyParams struct {
+// EcommerceApply 二级商户进件
+type EcommerceApply struct {
 	OutRequestNo        string `json:"out_request_no"`    // 业务申请编号
 	OrganizationType    string `json:"organization_type"` // 主体类型
 	BusinessLicenseInfo struct {
@@ -127,13 +127,13 @@ type EcommerceApplyParams struct {
 	BusinessAdditionDesc string `json:"business_addition_desc"` // 补充说明
 }
 
-// EcommerceApplyQueryParams 二级商户进件查询参数
-type EcommerceApplyQueryParams struct {
+// EcommerceApplyQuery 二级商户进件查询
+type EcommerceApplyQuery struct {
 	ApplymentID string `json:"applyment_id"` // 微信支付申请单号
 }
 
-// ReceiversAddParams 添加分账接收方参数
-type ReceiversAddParams struct {
+// EcommerceReceiversAdd 添加分账接收方
+type EcommerceReceiversAdd struct {
 	Appid         string `json:"appid"`          // 公众账号ID
 	Type          string `json:"type"`           // 接收方类型
 	Account       string `json:"account"`        // 接收方账号
@@ -142,8 +142,8 @@ type ReceiversAddParams struct {
 	RelationType  string `json:"relation_type"`  // 与分账方的关系类型
 }
 
-// ProfitSharingOrders 请求分账参数
-type ProfitSharingOrders struct {
+// Apply 请求分账参数
+type ProfitSharingApply struct {
 	Appid         string                          `json:"appid"`          // 公众账号ID
 	SubMchid      string                          `json:"sub_mchid"`      // 二级商户号
 	TransactionID string                          `json:"transaction_id"` // 微信订单号
@@ -161,14 +161,14 @@ type ProfitSharingOrdersReceivers struct {
 	ReceiverName    string `json:"receiver_name"`    // 分账姓名
 }
 
-// ProfitSharingQuery 分账-查询分账结果
+// Query 分账-查询分账结果
 type ProfitSharingQuery struct {
 	SubMchid      string `json:"sub_mchid"`      // 二级商户号
 	TransactionID string `json:"transaction_id"` // 微信订单号
 	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
 }
 
-// ProfitSharingFinishOrder 分账-完结分账
+// FinishOrder 分账-完结分账
 type ProfitSharingFinishOrder struct {
 	SubMchid      string `json:"sub_mchid"`      // 二级商户号
 	TransactionID string `json:"transaction_id"` // 微信订单号
@@ -176,7 +176,7 @@ type ProfitSharingFinishOrder struct {
 	Description   string `json:"description"`    // 分账描述
 }
 
-// RefundApply 申请退款
+// Apply 申请退款
 type RefundApply struct {
 	SubMchid      string `json:"sub_mchid"`      // 二级商户号
 	SpAppid       string `json:"sp_appid"`       // 电商平台APPID
@@ -193,7 +193,7 @@ type RefundApply struct {
 	NotifyURL string `json:"notify_url"` // 退款结果回调URL
 }
 
-// RefundQuery 退款查询
+// Query 退款查询
 type RefundQuery struct {
 	RefundID string `json:"refund_id"` // 微信退款单号
 	SubMchid string `json:"sub_mchid"` // 二级商户号

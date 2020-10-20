@@ -3,7 +3,7 @@ package weixin_shop_pay
 import (
 	"weixin_shop_pay/balance"
 	"weixin_shop_pay/ecommerce"
-	"weixin_shop_pay/normal_pay"
+	"weixin_shop_pay/pay"
 	"weixin_shop_pay/profitsharing"
 	"weixin_shop_pay/refund"
 	"weixin_shop_pay/withdraw"
@@ -32,9 +32,9 @@ type Client struct {
 	Config *Config
 }
 
-// NormalPay 普通支付
-func (c *Client) NormalPay() *normal_pay.NormalPay {
-	return &normal_pay.NormalPay{Config: c.Config}
+// Pay 普通支付
+func (c *Client) Pay() *pay.Pay {
+	return &pay.Pay{Config: c.Config}
 }
 
 // Ecommerce 二级商户进件

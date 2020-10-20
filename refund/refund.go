@@ -13,8 +13,8 @@ type Refund struct {
 	Config *weixin_shop_pay.Config
 }
 
-// RefundApply 申请退款
-func (c *Refund) RefundApply(p *weixin_shop_pay.RefundApply) (*ApplyResp, error) {
+// Apply 申请退款
+func (c *Refund) Apply(p *weixin_shop_pay.RefundApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -63,8 +63,8 @@ type ApplyResp struct {
 	} `json:"promotion_detail"` // 优惠退款详情
 }
 
-// RefundQuery 退款查询
-func (c *Refund) RefundQuery(p *weixin_shop_pay.RefundQuery) (*QueryResp, error) {
+// Query 退款查询
+func (c *Refund) Query(p *weixin_shop_pay.RefundQuery) (*QueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
