@@ -19,7 +19,7 @@ func (c *NormalPay) QueryOrder(p *weixin_shop_pay.QueryOrderParams) (*QueryOrder
 
 	// 发起请求
 	urlPath := "v3/pay/partner/transactions/id/" + p.TransactionID
-	resp, err := tools.Request(urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
 	if err != nil {
 		return nil, err
 	}

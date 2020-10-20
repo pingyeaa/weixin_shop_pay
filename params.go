@@ -141,3 +141,37 @@ type ReceiversAddParams struct {
 	EncryptedName string `json:"encrypted_name"` // 接收方名称的密文
 	RelationType  string `json:"relation_type"`  // 与分账方的关系类型
 }
+
+// ProfitSharingOrders 请求分账参数
+type ProfitSharingOrders struct {
+	Appid         string                          `json:"appid"`          // 公众账号ID
+	SubMchid      string                          `json:"sub_mchid"`      // 二级商户号
+	TransactionID string                          `json:"transaction_id"` // 微信订单号
+	OutTradeNo    string                          `json:"out_trade_no"`   // 商户分账单号
+	Receivers     []*ProfitSharingOrdersReceivers `json:"receivers"`      // 分账接收方列表
+	Finish        bool                            `json:"finish"`         // 是否分账完成
+}
+
+// ProfitSharingOrdersReceivers 请求分账-分账接收方列表
+type ProfitSharingOrdersReceivers struct {
+	Type            string `json:"type"`             // 分账接收方类型
+	ReceiverAccount string `json:"receiver_account"` // 分账接收方账号
+	Amount          int    `json:"amount"`           // 分账金额
+	Description     string `json:"description"`      // 分账描述
+	ReceiverName    string `json:"receiver_name"`    // 分账姓名
+}
+
+// ProfitSharingQuery 分账-查询分账结果
+type ProfitSharingQuery struct {
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+}
+
+// ProfitSharingFinishOrder 分账-完结分账
+type ProfitSharingFinishOrder struct {
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	Description   string `json:"description"`    // 分账描述
+}
