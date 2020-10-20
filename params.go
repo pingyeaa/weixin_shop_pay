@@ -175,3 +175,26 @@ type ProfitSharingFinishOrder struct {
 	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
 	Description   string `json:"description"`    // 分账描述
 }
+
+// RefundApply 申请退款
+type RefundApply struct {
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	SpAppid       string `json:"sp_appid"`       // 电商平台APPID
+	SubAppid      string `json:"sub_appid"`      // 二级商户APPID
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户订单号
+	OutRefundNo   string `json:"out_refund_no"`  // 商户退款单号
+	Reason        string `json:"reason"`         // 退款原因
+	Amount        struct {
+		Refund   int    `json:"refund"`   // 退款金额
+		Total    int    `json:"total"`    // 原订单金额
+		Currency string `json:"currency"` // 退款币种
+	} `json:"amount"` // 订单金额
+	NotifyURL string `json:"notify_url"` // 退款结果回调URL
+}
+
+// RefundQuery 退款查询
+type RefundQuery struct {
+	RefundID string `json:"refund_id"` // 微信退款单号
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+}

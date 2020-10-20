@@ -4,6 +4,7 @@ import (
 	"weixin_shop_pay/ecommerce"
 	"weixin_shop_pay/normal_pay"
 	"weixin_shop_pay/profitsharing"
+	"weixin_shop_pay/refund"
 )
 
 // Config 配置
@@ -42,4 +43,9 @@ func (c *Client) Ecommerce() *ecommerce.Ecommerce {
 // ProfitSharing 分账
 func (c *Client) ProfitSharing() *profitsharing.ProfitSharing {
 	return &profitsharing.ProfitSharing{Config: c.Config}
+}
+
+// Refund 退款
+func (c *Client) Refund() *refund.Refund {
+	return &refund.Refund{Config: c.Config}
 }
