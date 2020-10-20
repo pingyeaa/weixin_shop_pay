@@ -1,4 +1,4 @@
-package normal_pay
+package profitsharing
 
 import (
 	"encoding/json"
@@ -8,8 +8,13 @@ import (
 	"weixin_shop_pay/tools"
 )
 
-// Order 下单
-func (c *NormalPay) Order(p *weixin_shop_pay.OrderParams) (*OrderResp, error) {
+// ProfitSharing 分账
+type ProfitSharing struct {
+	Config *weixin_shop_pay.Config
+}
+
+// ReceiversAdd 添加分账接收方
+func (c *ProfitSharing) ReceiversAdd(p *weixin_shop_pay.QueryOrderParams) (*ReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -18,7 +23,7 @@ func (c *NormalPay) Order(p *weixin_shop_pay.OrderParams) (*OrderResp, error) {
 	}
 
 	// 发起请求
-	urlPath := "v3/pay/partner/transactions/jsapi"
+	urlPath := "v3/ecommerce/profitsharing/receivers/add" + p.TransactionID
 	resp, err := tools.Request(urlPath, dataJsonByte, c.Config.KeyPath)
 	if err != nil {
 		return nil, err
@@ -30,7 +35,7 @@ func (c *NormalPay) Order(p *weixin_shop_pay.OrderParams) (*OrderResp, error) {
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output OrderResp
+	var output ReceiversAddResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -38,7 +43,8 @@ func (c *NormalPay) Order(p *weixin_shop_pay.OrderParams) (*OrderResp, error) {
 	return &output, nil
 }
 
-// OrderResp 下单返回数据
-type OrderResp struct {
-	PrepayID string `json:"prepay_id"`
+// QueryOrderResp 订单查询返回参数
+type ReceiversAddResp struct {
+	Type    string `json:"type"`    // 接收方类型
+	Account string `json:"account"` // 接收方账号
 }

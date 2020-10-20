@@ -131,3 +131,13 @@ type EcommerceApplyParams struct {
 type EcommerceApplyQueryParams struct {
 	ApplymentID string `json:"applyment_id"` // 微信支付申请单号
 }
+
+// ReceiversAddParams 添加分账接收方参数
+type ReceiversAddParams struct {
+	Appid         string `json:"appid"`          // 公众账号ID
+	Type          string `json:"type"`           // 接收方类型
+	Account       string `json:"account"`        // 接收方账号
+	Name          string `json:"name"`           // 接收方名称
+	EncryptedName string `json:"encrypted_name"` // 接收方名称的密文
+	RelationType  string `json:"relation_type"`  // 与分账方的关系类型
+}
