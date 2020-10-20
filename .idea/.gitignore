@@ -6,3 +6,7 @@
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/
+/../go.sum
+/modules.xml
+/vcs.xml
+/weixin-shop-pay.iml
