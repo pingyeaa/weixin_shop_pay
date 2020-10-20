@@ -1,4 +1,4 @@
-module wxshoppay
+module weixin_shop_pay
 
 go 1.14
 

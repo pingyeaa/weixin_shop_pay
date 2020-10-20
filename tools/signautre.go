@@ -1,4 +1,4 @@
-package weixin_shop_pay
+package tools
 
 import (
 	"crypto"
