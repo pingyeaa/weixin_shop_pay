@@ -24,41 +24,10 @@ type OrderParams struct {
 		ProfitSharing bool  `json:"profit_sharing"` // 是否制定分账
 		SubsidyAmount int64 `json:"subsidy_amount"` // 补差金额
 	} `json:"settle_info"` // 结算信息
-	Amount struct {
-		Total    int    `json:"total"`    // 订单总金额
-		Currency string `json:"currency"` // 货币类型
-	} `json:"amount"` // 订单金额
-	Payer struct {
-		SpOpenid  string `json:"sp_openid"`  // 用户服务标识
-		SubOpenid string `json:"sub_openid"` // 用户子标识
-	} `json:"payer"` // 支付者
+	Amount    *Amount    `json:"amount"`     // 订单金额
+	Payer     *Payer     `json:"payer"`      // 支付者
 	Detail    *Detail    `json:"detail"`     // 优惠功能
 	SceneInfo *SceneInfo `json:"scene_info"` // 场景信息
-}
-
-// Detail 优惠功能
-type Detail struct {
-	CostPrice   int    `json:"cost_price"` // 订单原价
-	InvoiceID   string `json:"invoice_id"` // 商家小票
-	GoodsDetail []struct {
-		MerchantsGoodsID string `json:"merchants_goods_id"` // 商户侧商品编码
-		WechatpayGoodsID string `json:"wechatpay_goods_id"` // 微信侧商品编码
-		GoodsName        string `json:"goods_name"`         // 商品的实际名称
-		Quantity         int    `json:"quantity"`           // 商品数量
-		UnitPrice        int    `json:"unit_price"`         // 商品单价
-	} `json:"goods_detail"` // 单品列表
-}
-
-// SceneInfo 场景信息
-type SceneInfo struct {
-	PayerClientIp string `json:"payer_client_ip"` // 用户终端IP
-	DeviceID      string `json:"device_id"`       // 商户端设备号
-	StoreInfo     struct {
-		ID       string `json:"id"`        // 门店编号
-		Name     string `json:"name"`      // 门店名称
-		AreaCode string `json:"area_code"` // 地区编码
-		Address  string `json:"address"`   // 详细地址
-	} `json:"store_info"` // 商户门店信息
 }
 
 // Order 下单
