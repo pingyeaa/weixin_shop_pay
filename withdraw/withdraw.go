@@ -24,7 +24,7 @@ func (c *Withdraw) SubMch(p *weixin_shop_pay.WithdrawSubMch) (*SubMchResp, error
 
 	// 发起请求
 	urlPath := "v3/ecommerce/fund/withdraw"
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c *Withdraw) SubMchQuery(p *weixin_shop_pay.WithdrawSubMchQuery) (*SubMchQ
 
 	// 发起请求
 	urlPath := "v3/ecommerce/fund/withdraw/" + p.WithdrawID
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}

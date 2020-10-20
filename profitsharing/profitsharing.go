@@ -24,7 +24,7 @@ func (c *ProfitSharing) ReceiversAdd(p *weixin_shop_pay.PayQueryOrder) (*Receive
 
 	// 发起请求
 	urlPath := "v3/ecommerce/profitsharing/receivers/add" + p.TransactionID
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (c *ProfitSharing) Apply(p *weixin_shop_pay.ProfitSharingApply) (*ApplyResp
 
 	// 发起请求
 	urlPath := "v3/ecommerce/profitsharing/orders"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +96,7 @@ func (c *ProfitSharing) Query(p *weixin_shop_pay.ProfitSharingQuery) (*QueryResp
 
 	// 发起请求
 	urlPath := "v3/ecommerce/profitsharing/orders"
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (c *ProfitSharing) FinishOrder(p *weixin_shop_pay.ProfitSharingFinishOrder)
 
 	// 发起请求
 	urlPath := "v3/ecommerce/profitsharing/finish-order"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}

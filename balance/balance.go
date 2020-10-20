@@ -24,7 +24,7 @@ func (c *Balance) SubMch(p *weixin_shop_pay.BalanceSubMch) (*SubMchResp, error) 
 
 	// 发起请求
 	urlPath := "v3/ecommerce/fund/balance/" + p.SubMchid
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}

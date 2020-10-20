@@ -8,14 +8,14 @@ import (
 )
 
 // PostRequest 请求接口
-func PostRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte, keyPath string) (*http.Response, error) {
+func PostRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
 	req, err := http.NewRequest("POST", weixin_shop_pay.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
 	if err != nil {
 		return nil, err
 	}
 
 	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(keyPath)
+	keyByte, err := ioutil.ReadFile(config.KeyPath)
 	if err != nil {
 		return nil, err
 	}
@@ -37,14 +37,14 @@ func PostRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []
 }
 
 // GetRequest .
-func GetRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte, keyPath string) (*http.Response, error) {
+func GetRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
 	req, err := http.NewRequest("GET", weixin_shop_pay.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
 	if err != nil {
 		return nil, err
 	}
 
 	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(keyPath)
+	keyByte, err := ioutil.ReadFile(config.KeyPath)
 	if err != nil {
 		return nil, err
 	}

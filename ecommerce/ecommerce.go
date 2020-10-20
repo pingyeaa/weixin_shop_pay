@@ -26,27 +26,7 @@ func (c *Ecommerce) EcommerceApply(p *weixin_shop_pay.EcommerceApply) (*ApplyRes
 
 	// 发起请求
 	urlPath := "v3/ecommerce/applyments"
-	req, err := http.NewRequest("POST", "https://api.mch.weixin.qq.com/"+urlPath, bytes.NewBuffer(dataJsonByte))
-	if err != nil {
-		return nil, err
-	}
-
-	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(c.Config.KeyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	// 签名
-	signature, err := tools.Signature(urlPath, string(dataJsonByte), string(keyByte), c.Config.SpMchID, c.Config.SerialNo)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "WECHATPAY2-SHA256-RSA2048 "+signature)
-	client := http.Client{}
-	resp, err := client.Do(req)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}

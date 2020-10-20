@@ -24,7 +24,7 @@ func (c *Refund) Apply(p *weixin_shop_pay.RefundApply) (*ApplyResp, error) {
 
 	// 发起请求
 	urlPath := "v3/ecommerce/refunds/apply"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +74,7 @@ func (c *Refund) Query(p *weixin_shop_pay.RefundQuery) (*QueryResp, error) {
 
 	// 发起请求
 	urlPath := "v3/ecommerce/refunds/id/" + p.RefundID
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}

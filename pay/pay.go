@@ -24,7 +24,7 @@ func (c *Pay) Order(p *weixin_shop_pay.PayOrder) (*OrderResp, error) {
 
 	// 发起请求
 	urlPath := "v3/pay/partner/transactions/jsapi"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (c *Pay) QueryOrder(p *weixin_shop_pay.PayQueryOrder) (*QueryOrderResp, err
 
 	// 发起请求
 	urlPath := "v3/pay/partner/transactions/id/" + p.TransactionID
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte, c.Config.KeyPath)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
