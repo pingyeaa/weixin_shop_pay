@@ -198,3 +198,23 @@ type RefundQuery struct {
 	RefundID string `json:"refund_id"` // 微信退款单号
 	SubMchid string `json:"sub_mchid"` // 二级商户号
 }
+
+// BalanceSubMch 二级商户余额查询
+type BalanceSubMch struct {
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+}
+
+// WithdrawSubMch 二级商户余额提现
+type WithdrawSubMch struct {
+	SubMchid     string `json:"sub_mchid"`      // 二级商户号
+	OutRequestNo string `json:"out_request_no"` // 商户提现单号
+	Amount       int    `json:"amount"`         // 提现金额
+	Remark       string `json:"remark"`         // 提现备注
+	BankMemo     string `json:"bank_memo"`      // 银行附言
+}
+
+// WithdrawSubMchQuery 二级商户提现单号查询
+type WithdrawSubMchQuery struct {
+	SubMchid   string `json:"sub_mchid"`   // 二级商户号
+	WithdrawID string `json:"withdraw_id"` // 微信支付提现单号
+}

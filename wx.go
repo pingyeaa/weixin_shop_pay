@@ -1,10 +1,12 @@
 package weixin_shop_pay
 
 import (
+	"weixin_shop_pay/balance"
 	"weixin_shop_pay/ecommerce"
 	"weixin_shop_pay/normal_pay"
 	"weixin_shop_pay/profitsharing"
 	"weixin_shop_pay/refund"
+	"weixin_shop_pay/withdraw"
 )
 
 // Config 配置
@@ -48,4 +50,14 @@ func (c *Client) ProfitSharing() *profitsharing.ProfitSharing {
 // Refund 退款
 func (c *Client) Refund() *refund.Refund {
 	return &refund.Refund{Config: c.Config}
+}
+
+// Balance 余额
+func (c *Client) Balance() *balance.Balance {
+	return &balance.Balance{Config: c.Config}
+}
+
+// Withdraw 提现
+func (c *Client) Withdraw() *withdraw.Withdraw {
+	return &withdraw.Withdraw{Config: c.Config}
 }
