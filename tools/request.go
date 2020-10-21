@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	config2 "github.com/pingyeaa/weixin-shop-pay/config"
+	config2 "github.com/pingyeaa/weixin_shop_pay/config"
 )
 
 // PostRequest 请求接口

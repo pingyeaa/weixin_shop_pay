@@ -1,4 +1,4 @@
-module github.com/pingyeaa/weixin-shop-pay
+module github.com/pingyeaa/weixin_shop_pay
 
 go 1.14
 

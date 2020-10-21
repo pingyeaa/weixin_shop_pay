@@ -7,10 +7,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/pingyeaa/weixin-shop-pay/config"
+	"github.com/pingyeaa/weixin_shop_pay/config"
 
-	"github.com/pingyeaa/weixin-shop-pay/params"
-	"github.com/pingyeaa/weixin-shop-pay/tools"
+	"github.com/pingyeaa/weixin_shop_pay/params"
+	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
 // Ecommerce 二级商户进件

@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/pingyeaa/weixin-shop-pay/config"
+	"github.com/pingyeaa/weixin_shop_pay/config"
 
-	"github.com/pingyeaa/weixin-shop-pay/params"
+	"github.com/pingyeaa/weixin_shop_pay/params"
 
-	"github.com/pingyeaa/weixin-shop-pay/tools"
+	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
 // Refund 退款
