@@ -19,7 +19,7 @@ type Ecommerce struct {
 }
 
 // Apply 二级商户进件
-func (c *Ecommerce) Apply(p *params.EcommerceApply) (*ApplyResp, error) {
+func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -40,7 +40,7 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*ApplyResp, error) {
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output ApplyResp
+	var output params.EcommerceApplyResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -48,14 +48,8 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*ApplyResp, error) {
 	return &output, nil
 }
 
-// ApplyResp 二级商户进件返回参数
-type ApplyResp struct {
-	ApplymentID  string `json:"applyment_id"`   // 微信支付申请单号
-	OutRequestNo string `json:"out_request_no"` // 业务申请编号
-}
-
 // ApplyQuery 二级商户进件查询
-func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*ApplyQueryResp, error) {
+func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.EcommerceApplyQueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -96,36 +90,10 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*ApplyQueryResp, 
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output ApplyQueryResp
+	var output params.EcommerceApplyQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
 	}
 	return &output, nil
-}
-
-// ApplyQueryResp 二级商户进件查询
-type ApplyQueryResp struct {
-	ApplymentState     string `json:"applyment_state"`      // 申请状态
-	ApplymentStateDesc string `json:"applyment_state_desc"` // 申请状态描述
-	SignURL            string `json:"sign_url"`             // 签约链接
-	SubMchid           string `json:"sub_mchid"`            // 电商平台二级商户号
-	AccountValidation  struct {
-		AccountName              int64  `json:"account_name"`               // 付款户名
-		AccountNo                string `json:"account_no"`                 // 付款卡号
-		PayAmount                string `json:"pay_amount"`                 // 汇款金额
-		DestinationAccountNumber string `json:"destination_account_number"` // 收款卡号
-		DestinationAccountName   string `json:"destination_account_name"`   // 收款户名
-		DestinationAccountBank   string `json:"destination_account_bank"`   // 开户银行
-		City                     string `json:"city"`                       // 省市信息
-		Remark                   string `json:"remark"`                     // 备注信息
-		Deadline                 string `json:"deadline"`                   // 汇款截止日期
-	} `json:"account_validation"` // 汇款账户验证信息
-	AuditDetail []struct {
-		ParamName    string `json:"param_name"`    // 参数名称
-		RejectReason string `json:"reject_reason"` // 驳回原因
-	} `json:"audit_detail"` // 驳回原因详情
-	LegalValidationURL string `json:"legal_validation_url"` // 法人验证链接
-	OutRequestNo       string `json:"out_request_no"`       // 业务申请编号
-	ApplymentID        int64  `json:"applyment_id"`         // 微信支付申请单号
 }

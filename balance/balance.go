@@ -17,7 +17,7 @@ type Balance struct {
 }
 
 // SubMch 二级商户余额查询
-func (c *Balance) SubMch(p *params.BalanceSubMch) (*SubMchResp, error) {
+func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -38,17 +38,10 @@ func (c *Balance) SubMch(p *params.BalanceSubMch) (*SubMchResp, error) {
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output SubMchResp
+	var output params.BalanceSubMchResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
 	}
 	return &output, nil
-}
-
-// SubMchResp .
-type SubMchResp struct {
-	SubMchid        string `json:"sub_mchid"`        // 二级商户号
-	AvailableAmount int64  `json:"available_amount"` // 可用余额
-	PendingAmount   int64  `json:"pending_amount"`   // 不可用余额
 }

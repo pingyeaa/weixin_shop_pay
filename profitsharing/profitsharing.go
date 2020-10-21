@@ -18,7 +18,7 @@ type ProfitSharing struct {
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*ReceiversAddResp, error) {
+func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*params.ProfitSharingReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -39,7 +39,7 @@ func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*ReceiversAddResp
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output ReceiversAddResp
+	var output params.ProfitSharingReceiversAddResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -47,14 +47,8 @@ func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*ReceiversAddResp
 	return &output, nil
 }
 
-// QueryOrderResp 订单查询返回参数
-type ReceiversAddResp struct {
-	Type    string `json:"type"`    // 接收方类型
-	Account string `json:"account"` // 接收方账号
-}
-
 // Apply 请求分账
-func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*ApplyResp, error) {
+func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitSharingApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -75,7 +69,7 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*ApplyResp, error) 
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output ApplyResp
+	var output params.ProfitSharingApplyResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -83,14 +77,8 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*ApplyResp, error) 
 	return &output, nil
 }
 
-// ApplyResp .
-type ApplyResp struct {
-	Type    string `json:"type"`    // 接收方类型
-	Account string `json:"account"` // 接收方账号
-}
-
 // Query 分账查询
-func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*QueryResp, error) {
+func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitSharingQueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -111,7 +99,7 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*QueryResp, error) 
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output QueryResp
+	var output params.ProfitSharingQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -119,30 +107,8 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*QueryResp, error) 
 	return &output, nil
 }
 
-// QueryResp .
-type QueryResp struct {
-	SubMchid      string `json:"sub_mchid"`      // 二级商户号
-	TransactionID string `json:"transaction_id"` // 微信订单号
-	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
-	OrderID       string `json:"order_id"`       // 微信分账单号
-	Status        string `json:"status"`         // 分账状态
-	Receivers     []struct {
-		ReceiverMchid   string `json:"receiver_mchid"`   // 分账接收商户号
-		Amount          int    `json:"amount"`           // 分账金额
-		Description     string `json:"description"`      // 分账描述
-		Result          string `json:"result"`           // 分账结果
-		FinishTime      string `json:"finish_time"`      // 完成时间
-		FailReason      string `json:"fail_reason"`      // 分账失败原因
-		Type            string `json:"type"`             // 分账接收方类型
-		ReceiverAccount string `json:"receiver_account"` // 分账接收方账号
-	} `json:"receivers"` // 分账接收方列表
-	CloseReason       string `json:"close_reason"`       // 关单原因
-	FinishAmount      int    `json:"finish_amount"`      // 分账完结金额
-	FinishDescription string `json:"finish_description"` // 分账完结描述
-}
-
 // FinishOrder 完结分账
-func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*FinishOrderResp, error) {
+func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params.ProfitSharingFinishOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -163,18 +129,10 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*Finish
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output FinishOrderResp
+	var output params.ProfitSharingFinishOrderResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
 	}
 	return &output, nil
-}
-
-// FinishOrderResp .
-type FinishOrderResp struct {
-	SubMchid      string `json:"sub_mchid"`      // 二级商户号
-	TransactionID string `json:"transaction_id"` // 微信订单号
-	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
-	OrderID       string `json:"order_id"`       // 微信分账单号
 }

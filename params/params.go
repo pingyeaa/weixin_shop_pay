@@ -59,11 +59,52 @@ type PayOrderSceneInfo struct {
 	} `json:"store_info"` // 商户门店信息
 }
 
+// PayOrderResp 下单返回数据
+type PayOrderResp struct {
+	ReturnCode string `xml:"return_code,omitempty" json:"return_code,omitempty"`
+	ReturnMsg  string `xml:"return_msg,omitempty" json:"return_msg,omitempty"`
+	Appid      string `xml:"appid,omitempty" json:"appid,omitempty"`
+	SubAppid   string `xml:"sub_appid,omitempty" json:"sub_appid,omitempty"`
+	MchId      string `xml:"mch_id,omitempty" json:"mch_id,omitempty"`
+	SubMchId   string `xml:"sub_mch_id,omitempty" json:"sub_mch_id,omitempty"`
+	DeviceInfo string `xml:"device_info,omitempty" json:"device_info,omitempty"`
+	NonceStr   string `xml:"nonce_str,omitempty" json:"nonce_str,omitempty"`
+	Sign       string `xml:"sign,omitempty" json:"sign,omitempty"`
+	ResultCode string `xml:"result_code,omitempty" json:"result_code,omitempty"`
+	ErrCode    string `xml:"err_code,omitempty" json:"err_code,omitempty"`
+	ErrCodeDes string `xml:"err_code_des,omitempty" json:"err_code_des,omitempty"`
+	TradeType  string `xml:"trade_type,omitempty" json:"trade_type,omitempty"`
+	PrepayId   string `xml:"prepay_id,omitempty" json:"prepay_id,omitempty"`
+	CodeUrl    string `xml:"code_url,omitempty" json:"code_url,omitempty"`
+	MwebUrl    string `xml:"mweb_url,omitempty" json:"mweb_url,omitempty"`
+	PrepayID   string `json:"prepay_id"`
+}
+
 // PayQueryOrder 查询订单
 type PayQueryOrder struct {
 	SpMchID       string `json:"sp_mchid"`       // 服务商户号
 	SubAppID      string `json:"sub_appid"`      // 二级商户公众号ID
 	TransactionID string `json:"transaction_id"` // 订单号
+}
+
+// PayQueryOrderResp 订单查询返回参数
+type PayQueryOrderResp struct {
+	SpAppID        string             `json:"sp_appid"`         // 服务商公众号ID
+	SpMchID        string             `json:"sp_mchid"`         // 服务商户号
+	SubAppID       string             `json:"sub_appid"`        // 二级商户公众号ID
+	SubMchID       string             `json:"sub_mchid"`        // 二级商户号
+	OutTradeNo     string             `json:"out_trade_no"`     // 商户订单号
+	TransactionID  string             `json:"transaction_id"`   // 微信支付订单号
+	TradeType      string             `json:"trade_type"`       // 交易类型
+	TradeState     string             `json:"trade_state"`      // 交易状态
+	TradeStateDesc string             `json:"trade_state_desc"` // 交易状态描述
+	BankType       string             `json:"bank_type"`        // 付款银行
+	Attach         string             `json:"attach"`           // 附加数据
+	SuccessTime    string             `json:"success_time"`     // 付款完成时间
+	Payer          *PayOrderPayer     `json:"payer"`            // 支付者
+	Amount         *PayOrderAmount    `json:"amount"`           // 订单金额
+	Detail         *PayOrderDetail    `json:"detail"`           // 优惠功能
+	SceneInfo      *PayOrderSceneInfo `json:"scene_info"`       // 场景信息
 }
 
 // EcommerceApply 二级商户进件
@@ -126,9 +167,41 @@ type EcommerceApply struct {
 	BusinessAdditionDesc string `json:"business_addition_desc"` // 补充说明
 }
 
+// EcommerceApplyResp 二级商户进件返回参数
+type EcommerceApplyResp struct {
+	ApplymentID  string `json:"applyment_id"`   // 微信支付申请单号
+	OutRequestNo string `json:"out_request_no"` // 业务申请编号
+}
+
 // EcommerceApplyQuery 二级商户进件查询
 type EcommerceApplyQuery struct {
 	ApplymentID string `json:"applyment_id"` // 微信支付申请单号
+}
+
+// EcommerceApplyQueryResp 二级商户进件查询
+type EcommerceApplyQueryResp struct {
+	ApplymentState     string `json:"applyment_state"`      // 申请状态
+	ApplymentStateDesc string `json:"applyment_state_desc"` // 申请状态描述
+	SignURL            string `json:"sign_url"`             // 签约链接
+	SubMchid           string `json:"sub_mchid"`            // 电商平台二级商户号
+	AccountValidation  struct {
+		AccountName              int64  `json:"account_name"`               // 付款户名
+		AccountNo                string `json:"account_no"`                 // 付款卡号
+		PayAmount                string `json:"pay_amount"`                 // 汇款金额
+		DestinationAccountNumber string `json:"destination_account_number"` // 收款卡号
+		DestinationAccountName   string `json:"destination_account_name"`   // 收款户名
+		DestinationAccountBank   string `json:"destination_account_bank"`   // 开户银行
+		City                     string `json:"city"`                       // 省市信息
+		Remark                   string `json:"remark"`                     // 备注信息
+		Deadline                 string `json:"deadline"`                   // 汇款截止日期
+	} `json:"account_validation"` // 汇款账户验证信息
+	AuditDetail []struct {
+		ParamName    string `json:"param_name"`    // 参数名称
+		RejectReason string `json:"reject_reason"` // 驳回原因
+	} `json:"audit_detail"` // 驳回原因详情
+	LegalValidationURL string `json:"legal_validation_url"` // 法人验证链接
+	OutRequestNo       string `json:"out_request_no"`       // 业务申请编号
+	ApplymentID        int64  `json:"applyment_id"`         // 微信支付申请单号
 }
 
 // EcommerceReceiversAdd 添加分账接收方
@@ -203,6 +276,13 @@ type BalanceSubMch struct {
 	SubMchid string `json:"sub_mchid"` // 二级商户号
 }
 
+// BalanceSubMchResp .
+type BalanceSubMchResp struct {
+	SubMchid        string `json:"sub_mchid"`        // 二级商户号
+	AvailableAmount int64  `json:"available_amount"` // 可用余额
+	PendingAmount   int64  `json:"pending_amount"`   // 不可用余额
+}
+
 // WithdrawSubMch 二级商户余额提现
 type WithdrawSubMch struct {
 	SubMchid     string `json:"sub_mchid"`      // 二级商户号
@@ -216,4 +296,114 @@ type WithdrawSubMch struct {
 type WithdrawSubMchQuery struct {
 	SubMchid   string `json:"sub_mchid"`   // 二级商户号
 	WithdrawID string `json:"withdraw_id"` // 微信支付提现单号
+}
+
+// ProfitSharingReceiversAddResp 订单查询返回参数
+type ProfitSharingReceiversAddResp struct {
+	Type    string `json:"type"`    // 接收方类型
+	Account string `json:"account"` // 接收方账号
+}
+
+// ProfitSharingApplyResp .
+type ProfitSharingApplyResp struct {
+	Type    string `json:"type"`    // 接收方类型
+	Account string `json:"account"` // 接收方账号
+}
+
+// ProfitSharingQueryResp .
+type ProfitSharingQueryResp struct {
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	OrderID       string `json:"order_id"`       // 微信分账单号
+	Status        string `json:"status"`         // 分账状态
+	Receivers     []struct {
+		ReceiverMchid   string `json:"receiver_mchid"`   // 分账接收商户号
+		Amount          int    `json:"amount"`           // 分账金额
+		Description     string `json:"description"`      // 分账描述
+		Result          string `json:"result"`           // 分账结果
+		FinishTime      string `json:"finish_time"`      // 完成时间
+		FailReason      string `json:"fail_reason"`      // 分账失败原因
+		Type            string `json:"type"`             // 分账接收方类型
+		ReceiverAccount string `json:"receiver_account"` // 分账接收方账号
+	} `json:"receivers"` // 分账接收方列表
+	CloseReason       string `json:"close_reason"`       // 关单原因
+	FinishAmount      int    `json:"finish_amount"`      // 分账完结金额
+	FinishDescription string `json:"finish_description"` // 分账完结描述
+}
+
+// ProfitSharingFinishOrderResp .
+type ProfitSharingFinishOrderResp struct {
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	OrderID       string `json:"order_id"`       // 微信分账单号
+}
+
+// RefundApplyResp .
+type RefundApplyResp struct {
+	RefundID    string `json:"refund_id"`     // 微信退款单号
+	OutRefundNo string `json:"out_refund_no"` // 商户退款单号
+	CreateTime  string `json:"create_time"`   // 退款创建时间
+	Amount      struct {
+		Refund         int    `json:"refund"`          // 退款金额
+		PayerRefund    int    `json:"payer_refund"`    // 用户退款金额
+		DiscountRefund int    `json:"discount_refund"` // 优惠退款金额
+		Currency       string `json:"currency"`        // 退款币种
+	} `json:"amount"` // 订单金额
+	PromotionDetail []struct {
+		PromotionID  string `json:"promotion_id"`  // 券ID
+		Scope        string `json:"scope"`         // 优惠范围
+		Type         string `json:"type"`          // 优惠类型
+		Amount       int    `json:"amount"`        // 优惠券面额
+		RefundAmount int    `json:"refund_amount"` // 优惠退款金额
+	} `json:"promotion_detail"` // 优惠退款详情
+}
+
+// RefundQueryResp .
+type RefundQueryResp struct {
+	RefundID            string `json:"refund_id"`             // 微信退款单号
+	OutRefundNo         string `json:"out_refund_no"`         // 商户退款单号
+	TransactionID       string `json:"transaction_id"`        // 微信订单号
+	OutTradeNo          string `json:"out_trade_no"`          // 商户订单号
+	Channel             string `json:"channel"`               // 退款渠道
+	UserReceivedAccount string `json:"user_received_account"` // 退款入账账号
+	SuccessTime         string `json:"success_time"`          // 退款成功时间
+	CreateTime          string `json:"create_time"`           // 退款创建时间
+	Status              string `json:"status"`                // 退款状态
+	Amount              struct {
+		Refund         int    `json:"refund"`          // 退款金额
+		PayerRefund    int    `json:"payer_refund"`    // 用户退款金额
+		DiscountRefund int    `json:"discount_refund"` // 优惠退款金额
+		Currency       string `json:"currency"`        // 退款币种
+	} `json:"amount"` // 订单金额
+	PromotionDetail []struct {
+		PromotionID  string `json:"promotion_id"`  // 券ID
+		Scope        string `json:"scope"`         // 优惠范围
+		Type         string `json:"type"`          // 优惠类型
+		Amount       int    `json:"amount"`        // 优惠券面额
+		RefundAmount int    `json:"refund_amount"` // 优惠退款金额
+	} `json:"promotion_detail"` // 优惠退款详情
+}
+
+// WithdrawSubMchResp .
+type WithdrawSubMchResp struct {
+	SubMchid     string `json:"sub_mchid"`      // 二级商户号
+	WithdrawID   string `json:"withdraw_id"`    // 微信支付提现单号
+	OutRequestNo string `json:"out_request_no"` // 商户提现单号s
+}
+
+// WithdrawSubMchQueryResp .
+type WithdrawSubMchQueryResp struct {
+	SubMchid     string `json:"sub_mchid"`      // 二级商户号
+	SpMchid      string `json:"sp_mchid"`       // 电商平台商户号
+	Status       string `json:"status"`         // 提现单状态
+	WithdrawID   string `json:"withdraw_id"`    // 微信支付提现单号
+	OutRequestNo string `json:"out_request_no"` // 商户提现单号
+	Amount       int    `json:"amount"`         // 提现金额
+	CreateTime   string `json:"create_time"`    // 发起提现时间
+	UpdateTime   string `json:"update_time"`    // 提现状态更新时间
+	Reason       string `json:"reason"`         // 失败原因
+	Remark       string `json:"remark"`         // 提现备注
+	BankMemo     string `json:"bank_memo"`      // 银行附言
 }

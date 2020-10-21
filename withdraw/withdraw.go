@@ -18,7 +18,7 @@ type Withdraw struct {
 }
 
 // SubMch 二级商户余额提现
-func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*SubMchResp, error) {
+func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -39,7 +39,7 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*SubMchResp, error) {
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output SubMchResp
+	var output params.WithdrawSubMchResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -47,15 +47,8 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*SubMchResp, error) {
 	return &output, nil
 }
 
-// SubMchResp .
-type SubMchResp struct {
-	SubMchid     string `json:"sub_mchid"`      // 二级商户号
-	WithdrawID   string `json:"withdraw_id"`    // 微信支付提现单号
-	OutRequestNo string `json:"out_request_no"` // 商户提现单号s
-}
-
 // SubMchQuery 二级商户余额查询
-func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*SubMchQueryResp, error) {
+func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*params.WithdrawSubMchQueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -76,25 +69,10 @@ func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*SubMchQueryResp,
 		return nil, err
 	}
 	log.Println(string(respData))
-	var output SubMchQueryResp
+	var output params.WithdrawSubMchQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
 	}
 	return &output, nil
-}
-
-// SubMchQueryResp .
-type SubMchQueryResp struct {
-	SubMchid     string `json:"sub_mchid"`      // 二级商户号
-	SpMchid      string `json:"sp_mchid"`       // 电商平台商户号
-	Status       string `json:"status"`         // 提现单状态
-	WithdrawID   string `json:"withdraw_id"`    // 微信支付提现单号
-	OutRequestNo string `json:"out_request_no"` // 商户提现单号
-	Amount       int    `json:"amount"`         // 提现金额
-	CreateTime   string `json:"create_time"`    // 发起提现时间
-	UpdateTime   string `json:"update_time"`    // 提现状态更新时间
-	Reason       string `json:"reason"`         // 失败原因
-	Remark       string `json:"remark"`         // 提现备注
-	BankMemo     string `json:"bank_memo"`      // 银行附言
 }
