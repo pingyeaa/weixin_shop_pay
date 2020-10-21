@@ -2,6 +2,7 @@ package withdraw
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 
@@ -38,6 +39,12 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp,
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.WithdrawSubMchResp
 	err = json.Unmarshal(respData, &output)
@@ -68,6 +75,12 @@ func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*params.WithdrawS
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.WithdrawSubMchQueryResp
 	err = json.Unmarshal(respData, &output)

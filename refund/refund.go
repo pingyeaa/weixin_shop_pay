@@ -2,6 +2,7 @@ package refund
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 
@@ -38,6 +39,12 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.RefundApplyResp
 	err = json.Unmarshal(respData, &output)
@@ -68,6 +75,12 @@ func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.RefundQueryResp
 	err = json.Unmarshal(respData, &output)

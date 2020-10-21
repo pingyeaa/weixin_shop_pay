@@ -1,11 +1,10 @@
 package ecommerce
 
 import (
-	"bytes"
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
-	"net/http"
 
 	"github.com/pingyeaa/weixin_shop_pay/config"
 
@@ -39,6 +38,12 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.EcommerceApplyResp
 	err = json.Unmarshal(respData, &output)
@@ -59,27 +64,7 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 
 	// 发起请求
 	urlPath := "v3/ecommerce/applyments"
-	req, err := http.NewRequest("POST", "https://api.mch.weixin.qq.com/"+urlPath, bytes.NewBuffer(dataJsonByte))
-	if err != nil {
-		return nil, err
-	}
-
-	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(c.Config.KeyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	// 签名
-	signature, err := tools.Signature(urlPath, string(dataJsonByte), string(keyByte), c.Config.SpMchID, c.Config.SerialNo)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "WECHATPAY2-SHA256-RSA2048 "+signature)
-	client := http.Client{}
-	resp, err := client.Do(req)
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -89,6 +74,12 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.EcommerceApplyQueryResp
 	err = json.Unmarshal(respData, &output)

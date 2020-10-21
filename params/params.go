@@ -447,3 +447,15 @@ type WithdrawSubMchQueryResp struct {
 	Remark       string `json:"remark"`         // 提现备注
 	BankMemo     string `json:"bank_memo"`      // 银行附言
 }
+
+// Error 错误信息
+type Error struct {
+	Code    string `json:"code"`    // 详细错误码
+	Message string `json:"message"` // 错误描述
+	Detail  struct {
+		Field    string `json:"field"` // 错误参数的位置
+		Value    string `json:"value"` // 错误的值
+		Issue    string `json:"issue"` // 具体错误原因
+		Location string `json:"location"`
+	} `json:"detail"` // 具体错误信息
+}

@@ -2,6 +2,7 @@ package pay
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 
@@ -37,6 +38,12 @@ func (c *Pay) Order(p *params.PayOrder) (*params.PayOrderResp, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.PayOrderResp
 	err = json.Unmarshal(respData, &output)
@@ -67,6 +74,12 @@ func (c *Pay) QueryOrderTransaction(p *params.PayQueryOrderTransaction) (*params
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.PayQueryOrderResp
 	err = json.Unmarshal(respData, &output)
@@ -97,6 +110,12 @@ func (c *Pay) QueryOrderOutTradeNo(p *params.PayQueryOrderOutTradeNo) (*params.P
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.PayQueryOrderResp
 	err = json.Unmarshal(respData, &output)

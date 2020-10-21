@@ -2,6 +2,7 @@ package balance
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 
@@ -37,6 +38,13 @@ func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, er
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
+	// 赋值返回
 	log.Println(string(respData))
 	var output params.BalanceSubMchResp
 	err = json.Unmarshal(respData, &output)

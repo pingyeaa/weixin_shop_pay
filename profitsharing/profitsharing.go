@@ -2,6 +2,7 @@ package profitsharing
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"log"
 
@@ -38,6 +39,12 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.ProfitSharingReceiversAddResp
 	err = json.Unmarshal(respData, &output)
@@ -68,6 +75,12 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.ProfitSharingApplyResp
 	err = json.Unmarshal(respData, &output)
@@ -98,6 +111,12 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitShari
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.ProfitSharingQueryResp
 	err = json.Unmarshal(respData, &output)
@@ -128,6 +147,12 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 	if err != nil {
 		return nil, err
 	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+	}
+
 	log.Println(string(respData))
 	var output params.ProfitSharingFinishOrderResp
 	err = json.Unmarshal(respData, &output)
