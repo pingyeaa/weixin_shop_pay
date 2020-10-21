@@ -120,7 +120,6 @@ type EcommerceApply struct {
 		StoreQrCode         string `json:"store_qr_code"`          // 店铺二维码
 		MiniProgramSubAPPID string `json:"mini_program_sub_appid"` // 小程序APPID
 	} `json:"sales_scene_info"` // 店铺信息
-	// merchant_shortname
 	MerchantShortname    string `json:"merchant_shortname"`     // 商户简称
 	Qualifications       string `json:"qualifications"`         // 特殊资质
 	BusinessAdditionPics string `json:"business_addition_pics"` // 补充材料
