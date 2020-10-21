@@ -18,8 +18,8 @@ type Ecommerce struct {
 	Config *config.Config
 }
 
-// EcommerceApply 二级商户进件
-func (c *Ecommerce) EcommerceApply(p *params.EcommerceApply) (*ApplyResp, error) {
+// Apply 二级商户进件
+func (c *Ecommerce) Apply(p *params.EcommerceApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
