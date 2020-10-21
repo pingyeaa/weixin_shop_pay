@@ -5,17 +5,20 @@ import (
 	"io/ioutil"
 	"log"
 
-	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/config"
+
+	"github.com/pingyeaa/weixin-shop-pay/params"
+
 	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // Withdraw 普通支付
 type Withdraw struct {
-	Config *weixin_shop_pay.Config
+	Config *config.Config
 }
 
 // SubMch 二级商户余额提现
-func (c *Withdraw) SubMch(p *weixin_shop_pay.WithdrawSubMch) (*SubMchResp, error) {
+func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*SubMchResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -52,7 +55,7 @@ type SubMchResp struct {
 }
 
 // SubMchQuery 二级商户余额查询
-func (c *Withdraw) SubMchQuery(p *weixin_shop_pay.WithdrawSubMchQuery) (*SubMchQueryResp, error) {
+func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*SubMchQueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

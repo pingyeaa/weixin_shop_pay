@@ -5,17 +5,20 @@ import (
 	"io/ioutil"
 	"log"
 
-	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/config"
+
+	"github.com/pingyeaa/weixin-shop-pay/params"
+
 	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // ProfitSharing 分账
 type ProfitSharing struct {
-	Config *weixin_shop_pay.Config
+	Config *config.Config
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *weixin_shop_pay.PayQueryOrder) (*ReceiversAddResp, error) {
+func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*ReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -51,7 +54,7 @@ type ReceiversAddResp struct {
 }
 
 // Apply 请求分账
-func (c *ProfitSharing) Apply(p *weixin_shop_pay.ProfitSharingApply) (*ApplyResp, error) {
+func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -87,7 +90,7 @@ type ApplyResp struct {
 }
 
 // Query 分账查询
-func (c *ProfitSharing) Query(p *weixin_shop_pay.ProfitSharingQuery) (*QueryResp, error) {
+func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*QueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -139,7 +142,7 @@ type QueryResp struct {
 }
 
 // FinishOrder 完结分账
-func (c *ProfitSharing) FinishOrder(p *weixin_shop_pay.ProfitSharingFinishOrder) (*FinishOrderResp, error) {
+func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*FinishOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

@@ -5,17 +5,20 @@ import (
 	"io/ioutil"
 	"log"
 
-	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/config"
+
+	"github.com/pingyeaa/weixin-shop-pay/params"
+
 	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // Refund 退款
 type Refund struct {
-	Config *weixin_shop_pay.Config
+	Config *config.Config
 }
 
 // Apply 申请退款
-func (c *Refund) Apply(p *weixin_shop_pay.RefundApply) (*ApplyResp, error) {
+func (c *Refund) Apply(p *params.RefundApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -65,7 +68,7 @@ type ApplyResp struct {
 }
 
 // Query 退款查询
-func (c *Refund) Query(p *weixin_shop_pay.RefundQuery) (*QueryResp, error) {
+func (c *Refund) Query(p *params.RefundQuery) (*QueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

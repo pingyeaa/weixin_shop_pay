@@ -3,20 +3,23 @@ package ecommerce
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pingyeaa/weixin-shop-pay"
-	"github.com/pingyeaa/weixin-shop-pay/tools"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/pingyeaa/weixin-shop-pay/config"
+
+	"github.com/pingyeaa/weixin-shop-pay/params"
+	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // Ecommerce 二级商户进件
 type Ecommerce struct {
-	Config *weixin_shop_pay.Config
+	Config *config.Config
 }
 
 // EcommerceApply 二级商户进件
-func (c *Ecommerce) EcommerceApply(p *weixin_shop_pay.EcommerceApply) (*ApplyResp, error) {
+func (c *Ecommerce) EcommerceApply(p *params.EcommerceApply) (*ApplyResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -52,7 +55,7 @@ type ApplyResp struct {
 }
 
 // ApplyQuery 二级商户进件查询
-func (c *Ecommerce) ApplyQuery(p *weixin_shop_pay.EcommerceApplyQuery) (*ApplyQueryResp, error) {
+func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*ApplyQueryResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

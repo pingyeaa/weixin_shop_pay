@@ -2,6 +2,7 @@ package weixin_shop_pay
 
 import (
 	"github.com/pingyeaa/weixin-shop-pay/balance"
+	"github.com/pingyeaa/weixin-shop-pay/config"
 	"github.com/pingyeaa/weixin-shop-pay/ecommerce"
 	"github.com/pingyeaa/weixin-shop-pay/pay"
 	"github.com/pingyeaa/weixin-shop-pay/profitsharing"
@@ -9,19 +10,8 @@ import (
 	"github.com/pingyeaa/weixin-shop-pay/withdraw"
 )
 
-// Config 配置
-type Config struct {
-	SpAppID  string // 服务商公众号ID
-	SpMchID  string // 服务商户号
-	KeyPath  string // 私钥地址
-	SerialNo string // 证书序列号
-}
-
-// Domain 请求域名
-var Domain = "https://api.mch.weixin.qq.com/"
-
 // NewClient 创建客户端
-func NewClient(c *Config) *Client {
+func NewClient(c *config.Config) *Client {
 	return &Client{
 		c,
 	}
@@ -29,7 +19,7 @@ func NewClient(c *Config) *Client {
 
 // Client 客户端
 type Client struct {
-	Config *Config
+	Config *config.Config
 }
 
 // Pay 普通支付

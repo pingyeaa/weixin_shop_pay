@@ -1,4 +1,4 @@
-package weixin_shop_pay
+package params
 
 // PayOrder 下单
 type PayOrder struct {

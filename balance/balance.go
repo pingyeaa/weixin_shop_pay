@@ -2,19 +2,22 @@ package balance
 
 import (
 	"encoding/json"
-	"github.com/pingyeaa/weixin-shop-pay"
-	"github.com/pingyeaa/weixin-shop-pay/tools"
 	"io/ioutil"
 	"log"
+
+	"github.com/pingyeaa/weixin-shop-pay/config"
+
+	"github.com/pingyeaa/weixin-shop-pay/params"
+	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // Balance 余额
 type Balance struct {
-	Config *weixin_shop_pay.Config
+	Config *config.Config
 }
 
 // SubMch 二级商户余额查询
-func (c *Balance) SubMch(p *weixin_shop_pay.BalanceSubMch) (*SubMchResp, error) {
+func (c *Balance) SubMch(p *params.BalanceSubMch) (*SubMchResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)

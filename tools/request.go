@@ -5,12 +5,12 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
+	config2 "github.com/pingyeaa/weixin-shop-pay/config"
 )
 
 // PostRequest 请求接口
-func PostRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
-	req, err := http.NewRequest("POST", weixin_shop_pay.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
+func PostRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
+	req, err := http.NewRequest("POST", config2.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
 	if err != nil {
 		return nil, err
 	}
@@ -38,8 +38,8 @@ func PostRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []
 }
 
 // GetRequest .
-func GetRequest(config *weixin_shop_pay.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
-	req, err := http.NewRequest("GET", weixin_shop_pay.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
+func GetRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
+	req, err := http.NewRequest("GET", config2.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
 	if err != nil {
 		return nil, err
 	}
