@@ -89,14 +89,21 @@ type PayOrderResp struct {
 	PrepayID   string `json:"prepay_id"`
 }
 
-// PayQueryOrder 查询订单
-type PayQueryOrder struct {
+// PayQueryOrderTransaction 微信订单查询
+type PayQueryOrderTransaction struct {
 	SpMchID       string `json:"sp_mchid"`       // 服务商户号
-	SubAppID      string `json:"sub_appid"`      // 二级商户公众号ID
+	SubMchID      string `json:"sub_mchid"`      // 二级商户号
 	TransactionID string `json:"transaction_id"` // 订单号
 }
 
-// PayQueryOrderResp 订单查询返回参数
+// PayQueryOrderOutTradeNo 商户订单查询
+type PayQueryOrderOutTradeNo struct {
+	SpMchID    string `json:"sp_mchid"`     // 服务商户号
+	SubMchID   string `json:"sub_mchid"`    // 二级商户号
+	OutTradeNo string `json:"out_trade_no"` // 商户订单号
+}
+
+// PayQueryOrderResp 微信订单查询返回参数
 type PayQueryOrderResp struct {
 	SpAppID        string             `json:"sp_appid"`         // 服务商公众号ID
 	SpMchID        string             `json:"sp_mchid"`         // 服务商户号
@@ -234,8 +241,8 @@ type EcommerceApplyQueryResp struct {
 	ApplymentID        int64  `json:"applyment_id"`         // 微信支付申请单号
 }
 
-// EcommerceReceiversAdd 添加分账接收方
-type EcommerceReceiversAdd struct {
+// ProfitSharingReceiversAdd 添加分账接收方
+type ProfitSharingReceiversAdd struct {
 	Appid         string `json:"appid"`          // 公众账号ID
 	Type          string `json:"type"`           // 接收方类型
 	Account       string `json:"account"`        // 接收方账号

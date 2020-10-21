@@ -18,7 +18,7 @@ type ProfitSharing struct {
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*params.ProfitSharingReceiversAddResp, error) {
+func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*params.ProfitSharingReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -27,7 +27,7 @@ func (c *ProfitSharing) ReceiversAdd(p *params.PayQueryOrder) (*params.ProfitSha
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/profitsharing/receivers/add" + p.TransactionID
+	urlPath := "v3/ecommerce/profitsharing/receivers/add"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
