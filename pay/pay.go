@@ -48,7 +48,23 @@ func (c *Pay) Order(p *params.PayOrder) (*OrderResp, error) {
 
 // OrderResp 下单返回数据
 type OrderResp struct {
-	PrepayID string `json:"prepay_id"`
+	ReturnCode string `xml:"return_code,omitempty" json:"return_code,omitempty"`
+	ReturnMsg  string `xml:"return_msg,omitempty" json:"return_msg,omitempty"`
+	Appid      string `xml:"appid,omitempty" json:"appid,omitempty"`
+	SubAppid   string `xml:"sub_appid,omitempty" json:"sub_appid,omitempty"`
+	MchId      string `xml:"mch_id,omitempty" json:"mch_id,omitempty"`
+	SubMchId   string `xml:"sub_mch_id,omitempty" json:"sub_mch_id,omitempty"`
+	DeviceInfo string `xml:"device_info,omitempty" json:"device_info,omitempty"`
+	NonceStr   string `xml:"nonce_str,omitempty" json:"nonce_str,omitempty"`
+	Sign       string `xml:"sign,omitempty" json:"sign,omitempty"`
+	ResultCode string `xml:"result_code,omitempty" json:"result_code,omitempty"`
+	ErrCode    string `xml:"err_code,omitempty" json:"err_code,omitempty"`
+	ErrCodeDes string `xml:"err_code_des,omitempty" json:"err_code_des,omitempty"`
+	TradeType  string `xml:"trade_type,omitempty" json:"trade_type,omitempty"`
+	PrepayId   string `xml:"prepay_id,omitempty" json:"prepay_id,omitempty"`
+	CodeUrl    string `xml:"code_url,omitempty" json:"code_url,omitempty"`
+	MwebUrl    string `xml:"mweb_url,omitempty" json:"mweb_url,omitempty"`
+	PrepayID   string `json:"prepay_id"`
 }
 
 // QueryOrder 查询订单

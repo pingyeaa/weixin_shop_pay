@@ -17,6 +17,11 @@ func NewClient(c *config.Config) *Client {
 	}
 }
 
+// NewConfig 实例化配置
+func NewConfig() *config.Config {
+	return &config.Config{}
+}
+
 // Client 客户端
 type Client struct {
 	Config *config.Config
