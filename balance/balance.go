@@ -2,10 +2,10 @@ package balance
 
 import (
 	"encoding/json"
+	"github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/tools"
 	"io/ioutil"
 	"log"
-	"weixin_shop_pay"
-	"weixin_shop_pay/tools"
 )
 
 // Balance 余额

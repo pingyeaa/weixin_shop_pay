@@ -1,12 +1,12 @@
 package weixin_shop_pay
 
 import (
-	"weixin_shop_pay/balance"
-	"weixin_shop_pay/ecommerce"
-	"weixin_shop_pay/pay"
-	"weixin_shop_pay/profitsharing"
-	"weixin_shop_pay/refund"
-	"weixin_shop_pay/withdraw"
+	"github.com/pingyeaa/weixin-shop-pay/balance"
+	"github.com/pingyeaa/weixin-shop-pay/ecommerce"
+	"github.com/pingyeaa/weixin-shop-pay/pay"
+	"github.com/pingyeaa/weixin-shop-pay/profitsharing"
+	"github.com/pingyeaa/weixin-shop-pay/refund"
+	"github.com/pingyeaa/weixin-shop-pay/withdraw"
 )
 
 // Config 配置

@@ -3,11 +3,11 @@ package ecommerce
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/tools"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"weixin_shop_pay"
-	"weixin_shop_pay/tools"
 )
 
 // Ecommerce 二级商户进件

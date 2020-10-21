@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"weixin_shop_pay"
-	"weixin_shop_pay/tools"
+
+	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
+	"github.com/pingyeaa/weixin-shop-pay/tools"
 )
 
 // ProfitSharing 分账

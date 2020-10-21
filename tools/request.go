@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
-	"weixin_shop_pay"
+
+	weixin_shop_pay "github.com/pingyeaa/weixin-shop-pay"
 )
 
 // PostRequest 请求接口
