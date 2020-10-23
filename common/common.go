@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"path"
@@ -55,12 +54,9 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageRe
 	if err != nil {
 		return nil, err
 	}
-	log.Println("签名", signature)
 
 	// 拼接请求体
 	imageFileExt := path.Ext(p.FilePath)
-	log.Println("文件后缀", imageFileExt)
-	log.Println("文件名", imageFile.Name())
 	requestBody := []byte(fmt.Sprintf("--boundary\r\n"+
 		"Content-Disposition: form-data; name=\"meta\";\r\n"+
 		"Content-Type: application/json\r\n"+
@@ -72,7 +68,6 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageRe
 		"\r\n"+
 		"%s\r\n"+
 		"--boundary--", string(dataJsonByte), imageFile.Name(), strings.Replace(imageFileExt, ".", "", -1), fileByte))
-	log.Println("请求体", string(requestBody))
 
 	// 设置请求头
 	req, err := http.NewRequest("POST", config.Domain+urlPath, bytes.NewBuffer(requestBody))
@@ -91,9 +86,10 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageRe
 	if err != nil {
 		return &res, nil
 	}
+	err = json.Unmarshal(body, &res)
+	if err != nil {
+		return &res, nil
+	}
 
-	//data, _ := json.Marshal(resp)
-	log.Println("响应结果", resp)
-	log.Println("响应体", string(body))
 	return &res, nil
 }
