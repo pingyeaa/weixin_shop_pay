@@ -9,4 +9,4 @@ type Config struct {
 }
 
 // Domain 请求域名
-var Domain = "https://api.mch.weixin.qq.com/"
+var Domain = "https://api.mch.weixin.qq.com"

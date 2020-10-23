@@ -4,21 +4,15 @@ import (
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha256"
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
-	"errors"
 	"fmt"
 	"log"
-	"strings"
 	"time"
 
 	"github.com/bwmarrin/snowflake"
-)
-
-const (
-	PEM_BEGIN = "-----BEGIN RSA PRIVATE KEY-----\n"
-	PEM_END   = "\n-----END RSA PRIVATE KEY-----"
 )
 
 // Signature 签名
@@ -28,51 +22,34 @@ func Signature(urlPath string, requestBody string, privateKey string, mchid stri
 		return "", err
 	}
 	method := "POST"
-	timestamp := time.Now().UnixNano()
+	timestamp := time.Now().Unix()
 	nonceStr := node.Generate()
 	signString := fmt.Sprintf("%s\n%s\n%d\n%s\n%s\n", method, urlPath, timestamp, nonceStr, requestBody)
-	log.Println(signString)
-	sign := RsaSign(signString, privateKey, crypto.SHA256)
+	log.Println("签名原文", signString)
+	sign, err := RsaSignWithSha256([]byte(signString), privateKey)
+	if err != nil {
+		return "", err
+	}
 	return fmt.Sprintf("mchid=\"%s\",nonce_str=\"%s\",signature=\"%s\",timestamp=\"%d\",serial_no=\"%s\"", mchid, nonceStr, sign, timestamp, serialNo), nil
 }
 
-func RsaSign(signContent string, privateKey string, hash crypto.Hash) string {
-	shaNew := hash.New()
-	shaNew.Write([]byte(signContent))
-	hashed := shaNew.Sum(nil)
-	priKey, err := ParsePrivateKey(privateKey)
-	if err != nil {
-		panic(err)
-	}
-
-	signature, err := rsa.SignPKCS1v15(rand.Reader, priKey, hash, hashed)
-	if err != nil {
-		panic(err)
-	}
-	return base64.StdEncoding.EncodeToString(signature)
-}
-
-func ParsePrivateKey(privateKey string) (*rsa.PrivateKey, error) {
-	privateKey = FormatPrivateKey(privateKey)
-	// 2、解码私钥字节，生成加密对象
+//签名
+func RsaSignWithSha256(data []byte, privateKey string) (string, error) {
 	block, _ := pem.Decode([]byte(privateKey))
-	if block == nil {
-		return nil, errors.New("私钥信息错误！")
+	if block == nil || block.Type != "PRIVATE KEY" {
+		log.Fatal("failed to decode PEM block containing public key")
 	}
-	// 3、解析DER编码的私钥，生成私钥对象
-	priKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	pri, err := x509.ParsePKCS8PrivateKey(block.Bytes)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
 	}
-	return priKey, nil
-}
-
-func FormatPrivateKey(privateKey string) string {
-	if !strings.HasPrefix(privateKey, PEM_BEGIN) {
-		privateKey = PEM_BEGIN + privateKey
+	h := sha256.New()
+	h.Write(data)
+	hash := h.Sum(nil)
+	log.Println("哈希", hash)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, pri.(*rsa.PrivateKey), crypto.SHA256, hash)
+	if err != nil {
+		fmt.Printf("Error from signing: %s\n", err)
 	}
-	if !strings.HasSuffix(privateKey, PEM_END) {
-		privateKey = privateKey + PEM_END
-	}
-	return privateKey
+	return base64.StdEncoding.EncodeToString(signature), nil
 }

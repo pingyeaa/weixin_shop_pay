@@ -432,6 +432,16 @@ type WithdrawSubMchQueryResp struct {
 	BankMemo     string `json:"bank_memo"`      // 银行附言
 }
 
+// CommonImageUpload 通用图片上传
+type CommonImageUpload struct {
+	FilePath string `json:"file_path"`
+}
+
+// CommonImageResp 通用图片上传返回
+type CommonImageResp struct {
+	MediaID string `json:"media_id"`
+}
+
 // Error 错误信息
 type Error struct {
 	Code    string `json:"code"`    // 详细错误码
