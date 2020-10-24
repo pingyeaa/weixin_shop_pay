@@ -28,7 +28,7 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/refunds/apply"
+	urlPath := "/v3/ecommerce/refunds/apply"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -57,15 +57,9 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 // Query 退款查询
 func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/refunds/id/" + p.RefundID
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/refunds/id/" + p.RefundID
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}

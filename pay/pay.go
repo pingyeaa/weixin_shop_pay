@@ -27,7 +27,7 @@ func (c *Pay) Order(p *params.PayOrder) (*params.PayOrderResp, error) {
 	}
 
 	// 发起请求
-	urlPath := "v3/pay/partner/transactions/jsapi"
+	urlPath := "/v3/pay/partner/transactions/jsapi"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (c *Pay) QueryOrderTransaction(p *params.PayQueryOrderTransaction) (*params
 	}
 
 	// 发起请求
-	urlPath := "v3/pay/partner/transactions/id/" + p.TransactionID
+	urlPath := "/v3/pay/partner/transactions/id/" + p.TransactionID
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -99,7 +99,7 @@ func (c *Pay) QueryOrderOutTradeNo(p *params.PayQueryOrderOutTradeNo) (*params.P
 	}
 
 	// 发起请求
-	urlPath := "v3/pay/partner/transactions/out-trade-no/" + p.OutTradeNo
+	urlPath := "/v3/pay/partner/transactions/out-trade-no/" + p.OutTradeNo
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err

@@ -20,15 +20,9 @@ type Balance struct {
 // SubMch 二级商户余额查询
 func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/fund/balance/" + p.SubMchid
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/fund/balance/" + p.SubMchid
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}

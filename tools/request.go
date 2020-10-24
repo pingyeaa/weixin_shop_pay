@@ -22,7 +22,7 @@ func PostRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*
 	}
 
 	// 签名
-	signature, err := Signature(urlPath, string(dataJsonByte), string(keyByte), config.SpMchID, config.SerialNo)
+	signature, err := Signature("POST", urlPath, string(dataJsonByte), string(keyByte), config.SpMchID, config.SerialNo)
 	if err != nil {
 		return nil, err
 	}
@@ -38,8 +38,8 @@ func PostRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*
 }
 
 // GetRequest .
-func GetRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*http.Response, error) {
-	req, err := http.NewRequest("GET", config2.Domain+urlPath, bytes.NewBuffer(dataJsonByte))
+func GetRequest(config *config2.Config, urlPath string) (*http.Response, error) {
+	req, err := http.NewRequest("GET", config2.Domain+urlPath, bytes.NewBuffer([]byte("")))
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func GetRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*h
 	}
 
 	// 签名
-	signature, err := Signature(urlPath, string(dataJsonByte), string(keyByte), config.SpMchID, config.SerialNo)
+	signature, err := Signature("GET", urlPath, "", string(keyByte), config.SpMchID, config.SerialNo)
 	if err != nil {
 		return nil, err
 	}

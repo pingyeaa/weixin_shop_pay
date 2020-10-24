@@ -21,15 +21,9 @@ type Withdraw struct {
 // SubMch 二级商户余额提现
 func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/fund/withdraw"
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/fund/withdraw"
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -57,15 +51,9 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp,
 // SubMchQuery 二级商户余额查询
 func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*params.WithdrawSubMchQueryResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/fund/withdraw/" + p.WithdrawID
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/fund/withdraw/" + p.WithdrawID
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}

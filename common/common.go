@@ -50,7 +50,7 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageRe
 
 	// 签名
 	urlPath := "/v3/merchant/media/upload"
-	signature, err := tools.Signature(urlPath, string(dataJsonByte), string(keyByte), t.Config.SpMchID, t.Config.SerialNo)
+	signature, err := tools.Signature("POST", urlPath, string(dataJsonByte), string(keyByte), t.Config.SpMchID, t.Config.SerialNo)
 	if err != nil {
 		return nil, err
 	}

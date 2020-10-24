@@ -28,7 +28,7 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/profitsharing/receivers/add"
+	urlPath := "/v3/ecommerce/profitsharing/receivers/add"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/profitsharing/orders"
+	urlPath := "/v3/ecommerce/profitsharing/orders"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -93,15 +93,9 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 // Query 分账查询
 func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitSharingQueryResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/profitsharing/orders"
-	resp, err := tools.GetRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/profitsharing/orders"
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +130,7 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/profitsharing/finish-order"
+	urlPath := "/v3/ecommerce/profitsharing/finish-order"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err

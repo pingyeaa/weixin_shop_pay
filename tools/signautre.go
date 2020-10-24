@@ -16,12 +16,11 @@ import (
 )
 
 // Signature 签名
-func Signature(urlPath string, requestBody string, privateKey string, mchid string, serialNo string) (string, error) {
+func Signature(method string, urlPath string, requestBody string, privateKey string, mchid string, serialNo string) (string, error) {
 	node, err := snowflake.NewNode(0)
 	if err != nil {
 		return "", err
 	}
-	method := "POST"
 	timestamp := time.Now().Unix()
 	nonceStr := node.Generate()
 	signString := fmt.Sprintf("%s\n%s\n%d\n%s\n%s\n", method, urlPath, timestamp, nonceStr, requestBody)

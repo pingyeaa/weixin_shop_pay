@@ -27,7 +27,7 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	}
 
 	// 发起请求
-	urlPath := "v3/ecommerce/applyments"
+	urlPath := "/v3/ecommerce/applyments/"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New("二级进件接口请求异常：" + string(respData))
 	}
 
 	log.Println(string(respData))
@@ -56,15 +56,9 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 // ApplyQuery 二级商户进件查询
 func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.EcommerceApplyQueryResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "v3/ecommerce/applyments"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/ecommerce/applyments/" + p.ApplymentID
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +71,7 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New("二级进件查询接口请求异常：" + string(respData))
 	}
 
 	log.Println(string(respData))
