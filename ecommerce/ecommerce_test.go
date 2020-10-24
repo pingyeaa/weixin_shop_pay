@@ -37,10 +37,7 @@ func TestEcommerce_Apply(t *testing.T) {
 
 func TestEcommerce_ApplyQuery(t *testing.T) {
 	ecommerce := Ecommerce{Config: &config.Config{
-		SpAppID:  "",
-		SpMchID:  "1603361319",
-		KeyPath:  "/Users/zhangyinuo/Golang/hdzs-api-go/cert/service_provider/apiclient_key.pem",
-		SerialNo: "6F7BFF8A4B560251EA5FA28FE961A8ABA4DDA063",
+		SpAppID: "",
 	}}
 	resp, err := ecommerce.ApplyQuery(&params.EcommerceApplyQuery{ApplymentID: "123"})
 	if err != nil {
