@@ -442,6 +442,32 @@ type CommonImageResp struct {
 	MediaID string `json:"media_id"`
 }
 
+// EcommerceModifySettlement 修改结算信息
+type EcommerceModifySettlement struct {
+	SubMchid        string `json:"sub_mchid"`         // 特约商户号
+	AccountType     string `json:"account_type"`      // 账户类型
+	AccountBank     string `json:"account_bank"`      // 开户银行
+	BankAddressCode string `json:"bank_address_code"` // 开户银行省市编码
+	BankName        string `json:"bank_name"`         // 开户银行全称（含支行）
+	BankBranchID    string `json:"bank_branch_id"`    // 开户银行联行号
+	AccountNumber   string `json:"account_number"`    // 银行账号
+}
+
+// EcommerceQuerySettlement 查询结算信息
+type EcommerceQuerySettlement struct {
+	SubMchid string `json:"sub_mchid"` // 特约商户号
+}
+
+// EcommerceQuerySettlementResp .
+type EcommerceQuerySettlementResp struct {
+	AccountType   string `json:"account_type"`   // 账户类型
+	AccountBank   string `json:"account_bank"`   // 开户银行
+	BankName      string `json:"bank_name"`      // 开户银行全称（含支行）
+	BankBranchID  string `json:"bank_branch_id"` // 开户银行联行号
+	AccountNumber string `json:"account_number"` // 银行账号
+	VerifyResult  string `json:"verify_result"`  // 汇款验证结果
+}
+
 // Error 错误信息
 type Error struct {
 	Code    string `json:"code"`    // 详细错误码

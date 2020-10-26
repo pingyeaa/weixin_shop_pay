@@ -82,3 +82,62 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 	}
 	return &output, nil
 }
+
+// ModifySettlement 修改结算账号
+func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error {
+
+	// 请求参数
+	dataJsonByte, err := json.Marshal(p)
+	if err != nil {
+		return err
+	}
+
+	// 发起请求
+	urlPath := "/v3/apply4sub/sub_merchants/" + p.SubMchid + "/modify-settlement"
+	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	if err != nil {
+		return err
+	}
+
+	// 解析返回参数
+	respData, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return errors.New("修改结算账号接口请求异常：" + string(respData))
+	}
+	return nil
+}
+
+// QuerySettlement 查询结算信息
+func (c *Ecommerce) QuerySettlement(p *params.EcommerceQuerySettlement) (*params.EcommerceQuerySettlementResp, error) {
+
+	// 发起请求
+	urlPath := "/v3/apply4sub/sub_merchants/" + p.SubMchid + "/settlement"
+	resp, err := tools.GetRequest(c.Config, urlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析返回参数
+	respData, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New("查询结算信息接口请求异常：" + string(respData))
+	}
+
+	log.Println(string(respData))
+	var output params.EcommerceQuerySettlementResp
+	err = json.Unmarshal(respData, &output)
+	if err != nil {
+		return nil, err
+	}
+	return &output, nil
+}
