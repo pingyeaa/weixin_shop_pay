@@ -22,8 +22,8 @@ type Common struct {
 }
 
 // ImageUpload 图片上传
-func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageResp, error) {
-	var res params.CommonImageResp
+func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUploadResp, error) {
+	var res params.CommonImageUploadResp
 
 	// 读取私钥文件
 	keyByte, err := ioutil.ReadFile(t.Config.KeyPath)

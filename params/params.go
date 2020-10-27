@@ -437,8 +437,8 @@ type CommonImageUpload struct {
 	FilePath string `json:"file_path"`
 }
 
-// CommonImageResp 通用图片上传返回
-type CommonImageResp struct {
+// CommonImageUploadResp 通用图片上传返回
+type CommonImageUploadResp struct {
 	MediaID string `json:"media_id"`
 }
 
