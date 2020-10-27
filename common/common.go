@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -28,7 +29,7 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUp
 	// 读取私钥文件
 	keyByte, err := ioutil.ReadFile(t.Config.KeyPath)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("私钥文件读取失败：%s", err)
 	}
 
 	// 读取图片内容
@@ -86,6 +87,7 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUp
 	if err != nil {
 		return &res, nil
 	}
+	log.Println("上传图片接口响应信息", string(body))
 	err = json.Unmarshal(body, &res)
 	if err != nil {
 		return &res, nil
