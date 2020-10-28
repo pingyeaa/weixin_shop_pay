@@ -40,13 +40,14 @@ func (c *Cert) Certificates() (*params.CertCertificatesResp, error) {
 	}
 
 	log.Println(string(respData))
-	var output params.CertCertificatesResp
-	err = json.Unmarshal(respData, &output)
+	var cipherResp params.CipherResp
+	err = json.Unmarshal(respData, &cipherResp)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, data := range output.Data {
+	output := params.CertCertificatesResp{}
+	for _, data := range cipherResp.Data {
 		log.Println(data.EncryptCertificate.Ciphertext)
 		log.Println(c.Config.SecretKey)
 		decryptContent, err := tools.AesDecrypt(data.EncryptCertificate.Ciphertext, c.Config.SecretKey, data.EncryptCertificate.Nonce, data.EncryptCertificate.AssociatedData)
@@ -54,6 +55,10 @@ func (c *Cert) Certificates() (*params.CertCertificatesResp, error) {
 			return nil, fmt.Errorf("证书结果解密失败：%s", err)
 		}
 		log.Println("解密数据", string(decryptContent))
+		output.List = append(output.List, params.CertCertificatesListResp{
+			SerialNo:  data.SerialNo,
+			PublicKey: string(decryptContent),
+		})
 	}
 
 	return &output, nil

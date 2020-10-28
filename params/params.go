@@ -507,6 +507,17 @@ type Error struct {
 
 // CertCertificates 平台证书列表
 type CertCertificatesResp struct {
+	List []CertCertificatesListResp `json:"list"`
+}
+
+// CertCertificatesListResp 平台证书-单证书信息
+type CertCertificatesListResp struct {
+	SerialNo  string `json:"serial_no"`  // 证书序列号
+	PublicKey string `json:"public_key"` // 微信证书公钥
+}
+
+// CipherResp 微信返回的加密结构体
+type CipherResp struct {
 	Data []struct {
 		SerialNo           string `json:"serial_no"`
 		EffectiveTime      string `json:"effective_time"`
