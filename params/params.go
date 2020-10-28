@@ -176,7 +176,7 @@ type EcommerceApplyContactInfo struct {
 	ContactType         string `json:"contact_type"`           // 超级管理员类型
 	ContactName         string `json:"contact_name"`           // 超级管理员姓名
 	ContactIDCardNumber string `json:"contact_id_card_number"` // 超级管理员身份证件号码
-	ContactPhone        string `json:"mobile_phone"`           // 超级管理员手机
+	MobilePhone         string `json:"mobile_phone"`           // 超级管理员手机
 	ContactEmail        string `json:"contact_email"`          // 超级管理员邮箱
 }
 
@@ -503,4 +503,19 @@ type Error struct {
 		Issue    string `json:"issue"` // 具体错误原因
 		Location string `json:"location"`
 	} `json:"detail"` // 具体错误信息
+}
+
+// CertCertificates 平台证书列表
+type CertCertificatesResp struct {
+	Data []struct {
+		SerialNo           string `json:"serial_no"`
+		EffectiveTime      string `json:"effective_time"`
+		ExpireTime         string `json:"expire_time"`
+		EncryptCertificate struct {
+			Algorithm      string `json:"algorithm"`
+			Nonce          string `json:"nonce"`
+			AssociatedData string `json:"associated_data"`
+			Ciphertext     string `json:"ciphertext"`
+		} `json:"encrypt_certificate"`
+	} `json:"data"`
 }

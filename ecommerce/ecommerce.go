@@ -20,6 +20,41 @@ type Ecommerce struct {
 // Apply 二级商户进件
 func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp, error) {
 
+	// 敏感信息加密
+	var err error
+	p.IDCardInfo.IDCardName, err = tools.Encrypt(p.IDCardInfo.IDCardName, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.IDCardInfo.IDCardNational, err = tools.Encrypt(p.IDCardInfo.IDCardNational, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.IDCardInfo.IDCardNumber, err = tools.Encrypt(p.IDCardInfo.IDCardNumber, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.IDCardInfo.IDCardValidTime, err = tools.Encrypt(p.IDCardInfo.IDCardValidTime, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.ContactInfo.ContactEmail, err = tools.Encrypt(p.ContactInfo.ContactEmail, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.ContactInfo.ContactIDCardNumber, err = tools.Encrypt(p.ContactInfo.ContactIDCardNumber, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.ContactInfo.MobilePhone, err = tools.Encrypt(p.ContactInfo.MobilePhone, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+	p.ContactInfo.ContactName, err = tools.Encrypt(p.ContactInfo.ContactName, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
+
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
 	if err != nil {

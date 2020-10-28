@@ -29,6 +29,7 @@ func PostRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "WECHATPAY2-SHA256-RSA2048 "+signature)
+	req.Header.Set("Wechatpay-Serial", config.PlatformSerialNo)
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {

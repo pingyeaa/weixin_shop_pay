@@ -2,6 +2,7 @@ package weixin_shop_pay
 
 import (
 	"github.com/pingyeaa/weixin_shop_pay/balance"
+	"github.com/pingyeaa/weixin_shop_pay/cert"
 	"github.com/pingyeaa/weixin_shop_pay/common"
 	"github.com/pingyeaa/weixin_shop_pay/config"
 	"github.com/pingyeaa/weixin_shop_pay/ecommerce"
@@ -61,4 +62,9 @@ func (c *Client) Withdraw() *withdraw.Withdraw {
 // Common 公共接口
 func (c *Client) Common() *common.Common {
 	return &common.Common{Config: c.Config}
+}
+
+// Cert 证书
+func (c *Client) Cert() *cert.Cert {
+	return &cert.Cert{Config: c.Config}
 }
