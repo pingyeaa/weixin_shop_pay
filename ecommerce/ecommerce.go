@@ -26,10 +26,6 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	if err != nil {
 		return nil, err
 	}
-	p.IDCardInfo.IDCardNational, err = tools.Encrypt(p.IDCardInfo.IDCardNational, c.Config.PlatformPublicKey)
-	if err != nil {
-		return nil, err
-	}
 	p.IDCardInfo.IDCardNumber, err = tools.Encrypt(p.IDCardInfo.IDCardNumber, c.Config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
