@@ -190,7 +190,7 @@ type EcommerceApplySalesSceneInfo struct {
 
 // EcommerceApplyResp 二级商户进件返回参数
 type EcommerceApplyResp struct {
-	ApplymentID  string `json:"applyment_id"`   // 微信支付申请单号
+	ApplymentID  int64  `json:"applyment_id"`   // 微信支付申请单号
 	OutRequestNo string `json:"out_request_no"` // 业务申请编号
 }
 
