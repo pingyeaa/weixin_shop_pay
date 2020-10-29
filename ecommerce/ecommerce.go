@@ -30,10 +30,6 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	if err != nil {
 		return nil, err
 	}
-	p.IDCardInfo.IDCardValidTime, err = tools.Encrypt(p.IDCardInfo.IDCardValidTime, c.Config.PlatformPublicKey)
-	if err != nil {
-		return nil, err
-	}
 	p.ContactInfo.ContactEmail, err = tools.Encrypt(p.ContactInfo.ContactEmail, c.Config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
