@@ -46,6 +46,10 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	if err != nil {
 		return nil, err
 	}
+	p.AccountInfo.AccountNumber, err = tools.Encrypt(p.AccountInfo.AccountNumber, c.Config.PlatformPublicKey)
+	if err != nil {
+		return nil, err
+	}
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
