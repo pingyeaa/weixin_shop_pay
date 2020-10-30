@@ -3,6 +3,7 @@ package pay
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 
@@ -92,15 +93,9 @@ func (c *Pay) QueryOrderTransaction(p *params.PayQueryOrderTransaction) (*params
 // QueryOrderOutTradeNo 商户订单查询
 func (c *Pay) QueryOrderOutTradeNo(p *params.PayQueryOrderOutTradeNo) (*params.PayQueryOrderResp, error) {
 
-	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
-	if err != nil {
-		return nil, err
-	}
-
 	// 发起请求
-	urlPath := "/v3/pay/partner/transactions/out-trade-no/" + p.OutTradeNo
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/pay/partner/transactions/out-trade-no/" + p.OutTradeNo + fmt.Sprintf("?sp_mchid=%s&sub_mchid=%s", p.SpMchID, p.SubMchID)
+	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
