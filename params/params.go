@@ -15,8 +15,8 @@ type PayOrder struct {
 	SettleInfo  *PayOrderSettleInfo `json:"settle_info"`  // 结算信息
 	Amount      *PayOrderAmount     `json:"amount"`       // 订单金额
 	Payer       *PayOrderPayer      `json:"payer"`        // 支付者
-	Detail      *PayOrderDetail     `json:"detail"`       // 优惠功能
-	SceneInfo   *PayOrderSceneInfo  `json:"scene_info"`   // 场景信息
+	//Detail      *PayOrderDetail     `json:"detail"`       // 优惠功能
+	//SceneInfo   *PayOrderSceneInfo  `json:"scene_info"`   // 场景信息
 }
 
 // PayOrderSettleInfo 下单-结算信息
@@ -39,18 +39,18 @@ type PayOrderPayer struct {
 
 // PayOrderDetail 下单-优惠功能
 type PayOrderDetail struct {
-	CostPrice   int                          `json:"cost_price"`   // 订单原价
-	InvoiceID   string                       `json:"invoice_id"`   // 商家小票
+	//CostPrice   int                          `json:"cost_price"`   // 订单原价
+	//InvoiceID   string                       `json:"invoice_id"`   // 商家小票
 	GoodsDetail []*PayOrderDetailGoodsDetail `json:"goods_detail"` // 单品列表
 }
 
 // PayOrderDetailGoodsDetail 下单-优惠功能-单品列表
 type PayOrderDetailGoodsDetail struct {
-	MerchantsGoodsID string `json:"merchants_goods_id"` // 商户侧商品编码
-	WechatpayGoodsID string `json:"wechatpay_goods_id"` // 微信侧商品编码
-	GoodsName        string `json:"goods_name"`         // 商品的实际名称
-	Quantity         int    `json:"quantity"`           // 商品数量
-	UnitPrice        int    `json:"unit_price"`         // 商品单价
+	MerchantGoodsID string `json:"merchant_goods_id"` // 商户侧商品编码
+	//WechatpayGoodsID string `json:"wechatpay_goods_id"` // 微信侧商品编码
+	//GoodsName        string `json:"goods_name"`         // 商品的实际名称
+	Quantity  int `json:"quantity"`   // 商品数量
+	UnitPrice int `json:"unit_price"` // 商品单价
 }
 
 // PayOrderSceneInfo 下单-场景信息

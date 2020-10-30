@@ -41,7 +41,7 @@ func (c *Pay) Order(p *params.PayOrder) (*params.PayOrderResp, error) {
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New("下单接口请求异常：" + string(respData))
 	}
 
 	log.Println(string(respData))
