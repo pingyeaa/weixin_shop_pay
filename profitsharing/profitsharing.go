@@ -57,6 +57,16 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 // Apply 请求分账
 func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitSharingApplyResp, error) {
 
+	var err error
+
+	// 加密接收方姓名
+	for index, receiver := range p.Receivers {
+		p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
 	if err != nil {
