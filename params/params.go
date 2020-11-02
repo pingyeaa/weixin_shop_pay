@@ -330,8 +330,10 @@ type ProfitSharingReceiversAddResp struct {
 
 // ProfitSharingApplyResp .
 type ProfitSharingApplyResp struct {
-	Type    string `json:"type"`    // 接收方类型
-	Account string `json:"account"` // 接收方账号
+	SubMchid      string `json:"sub_mchid"`      // 二级商户号
+	TransactionID string `json:"transaction_id"` // 微信订单号
+	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	OrderID       string `json:"order_id"`       // 微信分账单号
 }
 
 // ProfitSharingQueryResp 分账查询
