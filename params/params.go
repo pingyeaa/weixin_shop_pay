@@ -240,7 +240,7 @@ type ProfitSharingApply struct {
 	Appid         string                        `json:"appid"`          // 公众账号ID
 	SubMchid      string                        `json:"sub_mchid"`      // 二级商户号
 	TransactionID string                        `json:"transaction_id"` // 微信订单号
-	OutTradeNo    string                        `json:"out_trade_no"`   // 商户分账单号
+	OutOrderNo    string                        `json:"out_order_no"`   // 商户分账单号
 	Receivers     []*ProfitSharingApplyReceiver `json:"receivers"`      // 分账接收方列表
 	Finish        bool                          `json:"finish"`         // 是否分账完成
 }
