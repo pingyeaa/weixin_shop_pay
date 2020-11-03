@@ -3,6 +3,7 @@ package tools
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	config2 "github.com/pingyeaa/weixin_shop_pay/config"
@@ -33,6 +34,7 @@ func PostRequest(config *config2.Config, urlPath string, dataJsonByte []byte) (*
 	client := http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Println("POST请求报错", err.Error())
 		return nil, err
 	}
 	return resp, nil
