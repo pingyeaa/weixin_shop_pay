@@ -128,7 +128,6 @@ func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error 
 		BankBranchID:    p.BankBranchID,
 		AccountNumber:   p.AccountNumber,
 	}
-
 	// 请求参数
 	dataJsonByte, err := json.Marshal(body)
 	if err != nil {
