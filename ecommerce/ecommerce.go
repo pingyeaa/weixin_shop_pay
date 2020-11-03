@@ -119,9 +119,18 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 
 // ModifySettlement 修改结算账号
 func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error {
+	// 重新构造body参数
+	var body = params.EcommerceModifySettlementBody{
+		AccountType:     p.AccountType,
+		AccountBank:     p.AccountBank,
+		BankAddressCode: p.BankAddressCode,
+		BankName:        p.BankName,
+		BankBranchID:    p.BankBranchID,
+		AccountNumber:   p.AccountNumber,
+	}
 
 	// 请求参数
-	dataJsonByte, err := json.Marshal(p)
+	dataJsonByte, err := json.Marshal(body)
 	if err != nil {
 		return err
 	}

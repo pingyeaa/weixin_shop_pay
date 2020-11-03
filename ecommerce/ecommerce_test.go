@@ -45,3 +45,24 @@ func TestEcommerce_ApplyQuery(t *testing.T) {
 	}
 	log.Println(resp)
 }
+
+
+func TestModifySettlement(t *testing.T) {
+	ecommerce := Ecommerce{Config: &config.Config{
+		SpAppID: "",
+	}}
+	err := ecommerce.ModifySettlement(&params.EcommerceModifySettlement{
+		SubMchid:"",
+		AccountType:"ACCOUNT_TYPE_PRIVATE",
+		AccountBank:"工商银行",
+		BankAddressCode:"440307",
+		BankName:"中国工商银行股份有限公司深圳坂田支行",
+		BankBranchID:"440307",
+		AccountNumber:"",})
+
+	log.Println(err)
+	if err != nil {
+		t.Error(err)
+	}
+	log.Println(err)
+}

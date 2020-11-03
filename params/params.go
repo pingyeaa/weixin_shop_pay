@@ -455,6 +455,17 @@ type EcommerceModifySettlement struct {
 	AccountNumber   string `json:"account_number"`    // 银行账号
 }
 
+// EcommerceModifySettlementBody 修改结算信息
+type EcommerceModifySettlementBody struct {
+	AccountType     string `json:"account_type"`      // 账户类型
+	AccountBank     string `json:"account_bank"`      // 开户银行
+	BankAddressCode string `json:"bank_address_code"` // 开户银行省市编码
+	BankName        string `json:"bank_name"`         // 开户银行全称（含支行）
+	BankBranchID    string `json:"bank_branch_id"`    // 开户银行联行号
+	AccountNumber   string `json:"account_number"`    // 银行账号
+}
+
+
 // EcommerceQuerySettlement 查询结算信息
 type EcommerceQuerySettlement struct {
 	SubMchid string `json:"sub_mchid"` // 特约商户号
