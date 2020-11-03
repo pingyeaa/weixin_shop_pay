@@ -119,17 +119,23 @@ func (c *Ecommerce) ApplyQuery(p *params.EcommerceApplyQuery) (*params.Ecommerce
 
 // ModifySettlement 修改结算账号
 func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error {
-	// 重新构造body参数
-	var body = params.EcommerceModifySettlementBody{
+	// 加密银行卡号
+	if p.AccountNumber != "" {
+		AccountNumberMD, err := tools.Encrypt(p.AccountNumber, c.Config.PlatformPublicKey)
+		if err != nil {
+			return err
+		}
+		p.AccountNumber = AccountNumberMD
+	}
+	// 请求参数
+	dataJsonByte, err := json.Marshal(params.EcommerceModifySettlementBody{
 		AccountType:     p.AccountType,
 		AccountBank:     p.AccountBank,
 		BankAddressCode: p.BankAddressCode,
 		BankName:        p.BankName,
 		BankBranchID:    p.BankBranchID,
 		AccountNumber:   p.AccountNumber,
-	}
-	// 请求参数
-	dataJsonByte, err := json.Marshal(body)
+	})
 	if err != nil {
 		return err
 	}
