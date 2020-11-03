@@ -88,11 +88,13 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	// 解析返回参数
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("读取分账结果错误", err.Error())
 		return nil, err
 	}
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
+		log.Println("分账结果", string(respData))
 		return nil, errors.New("余额查询接口请求异常：" + string(respData))
 	}
 
