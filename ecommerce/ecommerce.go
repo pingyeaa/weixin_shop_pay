@@ -78,7 +78,7 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	}
 
 	// 验证接口是否错误
-	if resp.StatusCode != 204 {
+	if resp.StatusCode != 200 {
 		return nil, errors.New("二级进件接口请求异常：" + string(respData))
 	}
 
@@ -157,7 +157,7 @@ func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error 
 	}
 
 	// 验证接口是否错误
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 204 {
 		return errors.New("修改结算账号接口请求异常：" + string(respData))
 	}
 	return nil
