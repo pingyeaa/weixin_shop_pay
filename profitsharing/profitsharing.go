@@ -60,7 +60,9 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	var err error
 
 	// 加密接收方姓名
+
 	for index, receiver := range p.Receivers {
+		log.Println("ReceiverName加密", receiver.ReceiverName)
 		p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
 		if err != nil {
 			return nil, err
@@ -77,17 +79,22 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	urlPath := "/v3/ecommerce/profitsharing/orders"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
+		log.Println("分账错误", err.Error())
 		return nil, err
 	}
+
+	log.Println("分账头信息", resp.Status)
 
 	// 解析返回参数
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Println("读取分账结果错误", err.Error())
 		return nil, err
 	}
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
+		log.Println("分账结果", string(respData))
 		return nil, errors.New("余额查询接口请求异常：" + string(respData))
 	}
 

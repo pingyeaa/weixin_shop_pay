@@ -27,6 +27,7 @@ func Signature(method string, urlPath string, requestBody string, privateKey str
 	log.Println("签名原文", signString)
 	sign, err := RsaSignWithSha256([]byte(signString), privateKey)
 	if err != nil {
+
 		return "", err
 	}
 	return fmt.Sprintf("mchid=\"%s\",nonce_str=\"%s\",signature=\"%s\",timestamp=\"%d\",serial_no=\"%s\"", mchid, nonceStr, sign, timestamp, serialNo), nil

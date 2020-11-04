@@ -271,9 +271,9 @@ type ProfitSharingFinishOrder struct {
 
 // RefundApply 申请退款
 type RefundApply struct {
-	SubMchid      string             `json:"sub_mchid"`      // 二级商户号
-	SpAppid       string             `json:"sp_appid"`       // 电商平台APPID
-	SubAppid      string             `json:"sub_appid"`      // 二级商户APPID
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+	SpAppid  string `json:"sp_appid"`  // 电商平台APPID
+	//SubAppid      string             `json:"sub_appid"`      // 二级商户APPID
 	TransactionID string             `json:"transaction_id"` // 微信订单号
 	OutOrderNo    string             `json:"out_order_no"`   // 商户订单号
 	OutRefundNo   string             `json:"out_refund_no"`  // 商户退款单号
@@ -464,7 +464,6 @@ type EcommerceModifySettlementBody struct {
 	BankBranchID    string `json:"bank_branch_id"`    // 开户银行联行号
 	AccountNumber   string `json:"account_number"`    // 银行账号
 }
-
 
 // EcommerceQuerySettlement 查询结算信息
 type EcommerceQuerySettlement struct {
