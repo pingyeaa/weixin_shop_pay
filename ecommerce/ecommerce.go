@@ -136,7 +136,6 @@ func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error 
 		AccountType:     p.AccountType,
 		AccountBank:     p.AccountBank,
 		BankAddressCode: p.BankAddressCode,
-		//BankName:        p.BankName,
 		AccountNumber:   p.AccountNumber,
 	})
 	if err != nil {
