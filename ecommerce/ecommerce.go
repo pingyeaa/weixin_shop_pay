@@ -52,6 +52,10 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 		if err != nil {
 			return nil, err
 		}
+		p.AccountInfo.AccountName, err = tools.Encrypt(p.AccountInfo.AccountName, c.Config.PlatformPublicKey)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 请求参数
