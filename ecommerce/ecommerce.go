@@ -78,7 +78,7 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 	}
 
 	// 验证接口是否错误
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 204 {
 		return nil, errors.New("二级进件接口请求异常：" + string(respData))
 	}
 
