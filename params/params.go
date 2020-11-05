@@ -482,8 +482,8 @@ type EcommerceQuerySettlementResp struct {
 
 // ProfitSharingReturnOrders 分账回退
 type ProfitSharingReturnOrders struct {
-	SubMchid    string `json:"sub_mchid"`     // 二级商户号
-	OrderID     string `json:"order_id"`      // 微信分账单号
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+	//OrderID     string `json:"order_id"`      // 微信分账单号
 	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
 	OutReturnNo string `json:"out_return_no"` // 商户回退单号
 	ReturnMchid string `json:"return_mchid"`  // 回退商户号
