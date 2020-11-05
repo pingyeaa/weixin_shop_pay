@@ -52,6 +52,10 @@ func (c *Ecommerce) Apply(p *params.EcommerceApply) (*params.EcommerceApplyResp,
 		if err != nil {
 			return nil, err
 		}
+		p.AccountInfo.AccountName, err = tools.Encrypt(p.AccountInfo.AccountName, c.Config.PlatformPublicKey)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 请求参数
@@ -132,8 +136,6 @@ func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error 
 		AccountType:     p.AccountType,
 		AccountBank:     p.AccountBank,
 		BankAddressCode: p.BankAddressCode,
-		BankName:        p.BankName,
-		BankBranchID:    p.BankBranchID,
 		AccountNumber:   p.AccountNumber,
 	})
 	if err != nil {
@@ -154,7 +156,7 @@ func (c *Ecommerce) ModifySettlement(p *params.EcommerceModifySettlement) error 
 	}
 
 	// 验证接口是否错误
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 204 {
 		return errors.New("修改结算账号接口请求异常：" + string(respData))
 	}
 	return nil
