@@ -257,8 +257,8 @@ type ProfitSharingApplyReceiver struct {
 // Query 分账-查询分账结果
 type ProfitSharingQuery struct {
 	SubMchid      string `json:"sub_mchid"`      // 二级商户号
-	TransactionID string `json:"transaction_id"` // 微信订单号
 	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	OutReturnNo string `json:"out_return_no"` // 商户回退单号
 }
 
 // FinishOrder 分账-完结分账
