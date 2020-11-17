@@ -44,7 +44,7 @@ func (c *Pay) Order(p *params.PayOrder) (*params.PayOrderResp, error) {
 	log.Println("响应结果", string(respData))
 	log.Println("响应头信息", resp.StatusCode, resp.Status)
 	if resp.StatusCode != 200 {
-		return nil, errors.New("下单接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -80,7 +80,7 @@ func (c *Pay) QueryOrderTransaction(p *params.PayQueryOrderTransaction) (*params
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -110,7 +110,7 @@ func (c *Pay) QueryOrderOutTradeNo(p *params.PayQueryOrderOutTradeNo) (*params.P
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

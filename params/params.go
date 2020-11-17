@@ -542,3 +542,15 @@ type CipherResp struct {
 		} `json:"encrypt_certificate"`
 	} `json:"data"`
 }
+
+// HTTP CODE不等于200，或204时的错误返回参数
+type ErrorResponse struct {
+	Code string
+	Message string
+	Detail struct {
+		Field string
+		Value string
+		Issue string
+		Location string
+	}
+}

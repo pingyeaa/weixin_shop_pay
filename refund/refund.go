@@ -42,7 +42,7 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -72,7 +72,7 @@ func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

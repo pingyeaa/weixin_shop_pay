@@ -42,7 +42,7 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -95,7 +95,7 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
 		log.Println("分账结果", string(respData))
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -125,7 +125,7 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitShari
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -161,7 +161,7 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -197,7 +197,7 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("分账回退接口请求异常：" + string(respData))
+		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
