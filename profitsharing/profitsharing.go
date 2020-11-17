@@ -111,7 +111,7 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitSharingQueryResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/profitsharing/orders"
+	urlPath := "/v3/ecommerce/profitsharing/returnorders"
 	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
