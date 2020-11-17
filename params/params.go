@@ -490,9 +490,30 @@ type ProfitSharingReturnOrders struct {
 	Amount      int    `json:"amount"`        // 回退金额
 	Description string `json:"description"`   // 回退描述
 }
-
 // ProfitSharingReturnOrdersResp .
 type ProfitSharingReturnOrdersResp struct {
+	SubMchid    string `json:"sub_mchid"`     // 二级商户号
+	OrderID     string `json:"order_id"`      // 微信分账单号
+	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
+	OutReturnNo string `json:"out_return_no"` // 商户回退单号
+	ReturnMchid string `json:"return_mchid"`  // 回退商户号
+	Amount      int    `json:"amount"`        // 回退金额
+	ReturnNo    string `json:"return_no"`     // 微信回退单号
+	Result      string `json:"result"`        // 回退结果
+	FailReason  string `json:"fail_reason"`   // 失败原因
+	FinishTime  string `json:"finish_time"`   // 完成时间
+}
+
+// ProfitSharingReturnOrdersQuery 分账回退查询
+type ProfitSharingReturnOrdersQuery struct {
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
+	OutReturnNo string `json:"out_return_no"` // 商户回退单号
+}
+
+
+//  ProfitSharingReturnOrdersQueryResp .
+type ProfitSharingReturnOrdersQueryResp struct {
 	SubMchid    string `json:"sub_mchid"`     // 二级商户号
 	OrderID     string `json:"order_id"`      // 微信分账单号
 	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号

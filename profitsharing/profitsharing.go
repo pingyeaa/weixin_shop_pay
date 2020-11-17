@@ -208,3 +208,33 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 	}
 	return &output, nil
 }
+
+// ReturnOrdersQuery 分账回退查询
+func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQuery) (*params.ProfitSharingReturnOrdersQueryResp, error) {
+
+	// 发起请求
+	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid="+ p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
+	resp, err := tools.GetRequest(c.Config, urlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析返回参数
+	respData, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New(string(respData))
+	}
+
+	log.Println(string(respData))
+	var output params.ProfitSharingReturnOrdersQueryResp
+	err = json.Unmarshal(respData, &output)
+	if err != nil {
+		return nil, err
+	}
+	return &output, nil
+}
