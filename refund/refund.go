@@ -83,3 +83,35 @@ func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 	}
 	return &output, nil
 }
+
+// QueryByRefundNo 退款查询
+func (c *Refund) QueryByRefundNo(p *params.RefundQueryByRefundNo) (*params.RefundQueryResp, error) {
+
+	// 发起请求
+	// /v3/ecommerce/refunds/out-refund-no/{out_refund_no}
+	urlPath := "/v3/ecommerce/refunds/out-refund-no/" + p.OutRefundNo + "?sub_mchid=" + p.SubMchid
+
+	resp, err := tools.GetRequest(c.Config, urlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析返回参数
+	respData, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New(string(respData))
+	}
+
+	log.Println(string(respData))
+	var output params.RefundQueryResp
+	err = json.Unmarshal(respData, &output)
+	if err != nil {
+		return nil, err
+	}
+	return &output, nil
+}

@@ -295,6 +295,12 @@ type RefundQuery struct {
 	SubMchid string `json:"sub_mchid"` // 二级商户号
 }
 
+// RefundQueryByRefundNo 退款查询
+type RefundQueryByRefundNo struct {
+	OutRefundNo string `json:"out_refund_no"` // 退款单号
+	SubMchid string `json:"sub_mchid"` // 二级商户号
+}
+
 // BalanceSubMch 二级商户余额查询
 type BalanceSubMch struct {
 	SubMchid string `json:"sub_mchid"` // 二级商户号
