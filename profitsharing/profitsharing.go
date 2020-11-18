@@ -63,9 +63,11 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 
 	for index, receiver := range p.Receivers {
 		log.Println("ReceiverName加密", receiver.ReceiverName)
+		if receiver.ReceiverName != "" {
 		p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
 		if err != nil {
 			return nil, err
+		}
 		}
 	}
 
