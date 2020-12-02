@@ -240,3 +240,33 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQue
 	}
 	return &output, nil
 }
+
+// LeftOrderAmount 查询订单剩余待分金额
+func (c *ProfitSharing) LeftOrderAmount(p *params.ProfitSharingLeftOrderAmount) (*params.ProfitSharingLeftOrderAmountResp, error) {
+
+	// 发起请求
+	urlPath := "/v3/ecommerce/profitsharing/orders/"+ p.TransactionID +"/amounts"
+	resp, err := tools.GetRequest(c.Config, urlPath)
+	if err != nil {
+		return nil, err
+	}
+
+	// 解析返回参数
+	respData, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// 验证接口是否错误
+	if resp.StatusCode != 200 {
+		return nil, errors.New(string(respData))
+	}
+
+	log.Println(string(respData))
+	var output params.ProfitSharingLeftOrderAmountResp
+	err = json.Unmarshal(respData, &output)
+	if err != nil {
+		return nil, err
+	}
+	return &output, nil
+}

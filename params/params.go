@@ -517,7 +517,6 @@ type ProfitSharingReturnOrdersQuery struct {
 	OutReturnNo string `json:"out_return_no"` // 商户回退单号
 }
 
-
 //  ProfitSharingReturnOrdersQueryResp .
 type ProfitSharingReturnOrdersQueryResp struct {
 	SubMchid    string `json:"sub_mchid"`     // 二级商户号
@@ -531,6 +530,18 @@ type ProfitSharingReturnOrdersQueryResp struct {
 	FailReason  string `json:"fail_reason"`   // 失败原因
 	FinishTime  string `json:"finish_time"`   // 完成时间
 }
+
+// ProfitSharingLeftOrderAmount 查询订单剩余待分金额
+type ProfitSharingLeftOrderAmount struct {
+	TransactionID string `json:"transaction_id"` // 订单号
+}
+
+//  ProfitSharingLeftOrderAmountResp .
+type ProfitSharingLeftOrderAmountResp struct {
+	TransactionID string `json:"transaction_id"` // 订单号
+	UnsplitAmount     string `json:"unsplit_amount"`      // 订单剩余待分金额
+}
+
 
 // Error 错误信息
 type Error struct {
