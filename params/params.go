@@ -539,7 +539,7 @@ type ProfitSharingLeftOrderAmount struct {
 //  ProfitSharingLeftOrderAmountResp .
 type ProfitSharingLeftOrderAmountResp struct {
 	TransactionID string `json:"transaction_id"` // 订单号
-	UnsplitAmount     string `json:"unsplit_amount"`      // 订单剩余待分金额
+	UnsplitAmount     int `json:"unsplit_amount"`      // 订单剩余待分金额
 }
 
 
