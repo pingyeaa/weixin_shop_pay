@@ -60,14 +60,13 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	var err error
 
 	// 加密接收方姓名
-
 	for index, receiver := range p.Receivers {
 		log.Println("ReceiverName加密", receiver.ReceiverName)
 		if receiver.ReceiverName != "" {
-		p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
-		if err != nil {
-			return nil, err
-		}
+			p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -76,7 +75,7 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("分账请求参数", string(dataJsonByte))
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders"
 	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
@@ -215,7 +214,7 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQuery) (*params.ProfitSharingReturnOrdersQueryResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid="+ p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
+	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid=" + p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
 	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
@@ -245,7 +244,7 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQue
 func (c *ProfitSharing) LeftOrderAmount(p *params.ProfitSharingLeftOrderAmount) (*params.ProfitSharingLeftOrderAmountResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/profitsharing/orders/"+ p.TransactionID +"/amounts"
+	urlPath := "/v3/ecommerce/profitsharing/orders/" + p.TransactionID + "/amounts"
 	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err

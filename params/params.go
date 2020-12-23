@@ -247,17 +247,17 @@ type ProfitSharingApply struct {
 
 // ProfitSharingApplyReceiver 请求分账-分账接收方列表
 type ProfitSharingApplyReceiver struct {
-	Type            string `json:"type"`             // 分账接收方类型
-	ReceiverAccount string `json:"receiver_account"` // 分账接收方账号
-	Amount          int    `json:"amount"`           // 分账金额
-	Description     string `json:"description"`      // 分账描述
-	ReceiverName    string `json:"receiver_name"`    // 分账姓名
+	Type            string `json:"type"`                    // 分账接收方类型
+	ReceiverAccount string `json:"receiver_account"`        // 分账接收方账号
+	Amount          int    `json:"amount"`                  // 分账金额
+	Description     string `json:"description"`             // 分账描述
+	ReceiverName    string `json:"receiver_name,omitempty"` // 分账姓名
 }
 
 // Query 分账-查询分账结果
 type ProfitSharingQuery struct {
-	SubMchid      string `json:"sub_mchid"`      // 二级商户号
-	OutOrderNo    string `json:"out_order_no"`   // 商户分账单号
+	SubMchid    string `json:"sub_mchid"`     // 二级商户号
+	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
 	OutReturnNo string `json:"out_return_no"` // 商户回退单号
 }
 
@@ -298,7 +298,7 @@ type RefundQuery struct {
 // RefundQueryByRefundNo 退款查询
 type RefundQueryByRefundNo struct {
 	OutRefundNo string `json:"out_refund_no"` // 退款单号
-	SubMchid string `json:"sub_mchid"` // 二级商户号
+	SubMchid    string `json:"sub_mchid"`     // 二级商户号
 }
 
 // BalanceSubMch 二级商户余额查询
@@ -468,7 +468,7 @@ type EcommerceModifySettlementBody struct {
 	BankAddressCode string `json:"bank_address_code"` // 开户银行省市编码
 	//BankName        string `json:"bank_name"`         // 开户银行全称（含支行）
 	//BankBranchID    string `json:"bank_branch_id"`    // 开户银行联行号
-	AccountNumber   string `json:"account_number"`    // 银行账号
+	AccountNumber string `json:"account_number"` // 银行账号
 }
 
 // EcommerceQuerySettlement 查询结算信息
@@ -496,6 +496,7 @@ type ProfitSharingReturnOrders struct {
 	Amount      int    `json:"amount"`        // 回退金额
 	Description string `json:"description"`   // 回退描述
 }
+
 // ProfitSharingReturnOrdersResp .
 type ProfitSharingReturnOrdersResp struct {
 	SubMchid    string `json:"sub_mchid"`     // 二级商户号
@@ -512,7 +513,7 @@ type ProfitSharingReturnOrdersResp struct {
 
 // ProfitSharingReturnOrdersQuery 分账回退查询
 type ProfitSharingReturnOrdersQuery struct {
-	SubMchid string `json:"sub_mchid"` // 二级商户号
+	SubMchid    string `json:"sub_mchid"`     // 二级商户号
 	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
 	OutReturnNo string `json:"out_return_no"` // 商户回退单号
 }
@@ -539,9 +540,8 @@ type ProfitSharingLeftOrderAmount struct {
 //  ProfitSharingLeftOrderAmountResp .
 type ProfitSharingLeftOrderAmountResp struct {
 	TransactionID string `json:"transaction_id"` // 订单号
-	UnsplitAmount     int `json:"unsplit_amount"`      // 订单剩余待分金额
+	UnsplitAmount int    `json:"unsplit_amount"` // 订单剩余待分金额
 }
-
 
 // Error 错误信息
 type Error struct {
@@ -583,12 +583,12 @@ type CipherResp struct {
 
 // HTTP CODE不等于200，或204时的错误返回参数
 type ErrorResponse struct {
-	Code string
+	Code    string
 	Message string
-	Detail struct {
-		Field string
-		Value string
-		Issue string
+	Detail  struct {
+		Field    string
+		Value    string
+		Issue    string
 		Location string
 	}
 }
