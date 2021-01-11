@@ -1,28 +1,23 @@
-package balance
+package weixin_shop_pay
 
 import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"log"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-
-	"github.com/pingyeaa/weixin_shop_pay/params"
-	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
 // Balance 余额
 type Balance struct {
-	Config *config.Config
+	Config *Config
 }
 
 // SubMch 二级商户余额查询
-func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, error) {
+func (c *Balance) SubMch(p *BalanceSubMch) (*BalanceSubMchResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/fund/balance/" + p.SubMchid
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +35,7 @@ func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, er
 
 	// 赋值返回
 	log.Println(string(respData))
-	var output params.BalanceSubMchResp
+	var output BalanceSubMchResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err

@@ -1,22 +1,22 @@
-package params
+package weixin_shop_pay
 
 // PayOrder 下单
 type PayOrder struct {
-	SpAppID     string              `json:"sp_appid"`     // 服务商公众号ID
-	SpMchID     string              `json:"sp_mchid"`     // 服务商户号
-	SubAppID    string              `json:"sub_appid"`    // 二级商户公众号ID
-	SubMchID    string              `json:"sub_mchid"`    // 二级商户号
-	Description string              `json:"description"`  // 商品描述
-	OutTradeNo  string              `json:"out_trade_no"` // 商户订单号
-	TimeExpire  string              `json:"time_expire"`  // 交易结束时间
-	Attach      string              `json:"attach"`       // 附加数据
-	NotifyURL   string              `json:"notify_url"`   // 通知地址
-	GoodsTag    string              `json:"goods_tag"`    // 订单优惠标记
-	SettleInfo  *PayOrderSettleInfo `json:"settle_info"`  // 结算信息
-	Amount      *PayOrderAmount     `json:"amount"`       // 订单金额
-	Payer       *PayOrderPayer      `json:"payer"`        // 支付者
-	//Detail      *PayOrderDetail     `json:"detail"`       // 优惠功能
-	//SceneInfo   *PayOrderSceneInfo  `json:"scene_info"`   // 场景信息
+	SpAppID     string              `json:"sp_appid"`             // 服务商公众号ID
+	SpMchID     string              `json:"sp_mchid"`             // 服务商户号
+	SubAppID    string              `json:"sub_appid"`            // 二级商户公众号ID
+	SubMchID    string              `json:"sub_mchid"`            // 二级商户号
+	Description string              `json:"description"`          // 商品描述
+	OutTradeNo  string              `json:"out_trade_no"`         // 商户订单号
+	TimeExpire  string              `json:"time_expire"`          // 交易结束时间
+	Attach      string              `json:"attach"`               // 附加数据
+	NotifyURL   string              `json:"notify_url"`           // 通知地址
+	GoodsTag    string              `json:"goods_tag"`            // 订单优惠标记
+	SettleInfo  *PayOrderSettleInfo `json:"settle_info"`          // 结算信息
+	Amount      *PayOrderAmount     `json:"amount"`               // 订单金额
+	Payer       *PayOrderPayer      `json:"payer"`                // 支付者
+	Detail      *PayOrderDetail     `json:"detail,omitempty"`     // 优惠功能
+	SceneInfo   *PayOrderSceneInfo  `json:"scene_info,omitempty"` // 场景信息
 }
 
 // PayOrderSettleInfo 下单-结算信息
@@ -46,11 +46,11 @@ type PayOrderDetail struct {
 
 // PayOrderDetailGoodsDetail 下单-优惠功能-单品列表
 type PayOrderDetailGoodsDetail struct {
-	MerchantGoodsID string `json:"merchant_goods_id"` // 商户侧商品编码
-	//WechatpayGoodsID string `json:"wechatpay_goods_id"` // 微信侧商品编码
-	//GoodsName        string `json:"goods_name"`         // 商品的实际名称
-	Quantity  int `json:"quantity"`   // 商品数量
-	UnitPrice int `json:"unit_price"` // 商品单价
+	MerchantGoodsID  string `json:"merchant_goods_id"`            // 商户侧商品编码
+	WechatpayGoodsID string `json:"wechatpay_goods_id,omitempty"` // 微信侧商品编码
+	GoodsName        string `json:"goods_name,omitempty"`         // 商品的实际名称
+	Quantity         int    `json:"quantity"`                     // 商品数量
+	UnitPrice        int    `json:"unit_price"`                   // 商品单价
 }
 
 // PayOrderSceneInfo 下单-场景信息
@@ -271,15 +271,15 @@ type ProfitSharingFinishOrder struct {
 
 // RefundApply 申请退款
 type RefundApply struct {
-	SubMchid string `json:"sub_mchid"` // 二级商户号
-	SpAppid  string `json:"sp_appid"`  // 电商平台APPID
-	//SubAppid      string             `json:"sub_appid"`      // 二级商户APPID
-	TransactionID string             `json:"transaction_id"` // 微信订单号
-	OutOrderNo    string             `json:"out_order_no"`   // 商户订单号
-	OutRefundNo   string             `json:"out_refund_no"`  // 商户退款单号
-	Reason        string             `json:"reason"`         // 退款原因
-	Amount        *RefundApplyAmount `json:"amount"`         // 订单金额
-	NotifyURL     string             `json:"notify_url"`     // 退款结果回调URL
+	SubMchid      string             `json:"sub_mchid"`           // 二级商户号
+	SpAppid       string             `json:"sp_appid"`            // 电商平台APPID
+	SubAppid      string             `json:"sub_appid,omitempty"` // 二级商户APPID
+	TransactionID string             `json:"transaction_id"`      // 微信订单号
+	OutOrderNo    string             `json:"out_order_no"`        // 商户订单号
+	OutRefundNo   string             `json:"out_refund_no"`       // 商户退款单号
+	Reason        string             `json:"reason"`              // 退款原因
+	Amount        *RefundApplyAmount `json:"amount"`              // 订单金额
+	NotifyURL     string             `json:"notify_url"`          // 退款结果回调URL
 }
 
 // RefundApplyAmount 申请退款-订单金额
@@ -463,12 +463,12 @@ type EcommerceModifySettlement struct {
 
 // EcommerceModifySettlementBody 修改结算信息
 type EcommerceModifySettlementBody struct {
-	AccountType     string `json:"account_type"`      // 账户类型
-	AccountBank     string `json:"account_bank"`      // 开户银行
-	BankAddressCode string `json:"bank_address_code"` // 开户银行省市编码
-	//BankName        string `json:"bank_name"`         // 开户银行全称（含支行）
-	//BankBranchID    string `json:"bank_branch_id"`    // 开户银行联行号
-	AccountNumber string `json:"account_number"` // 银行账号
+	AccountType     string `json:"account_type"`             // 账户类型
+	AccountBank     string `json:"account_bank"`             // 开户银行
+	BankAddressCode string `json:"bank_address_code"`        // 开户银行省市编码
+	BankName        string `json:"bank_name,omitempty"`      // 开户银行全称（含支行）
+	BankBranchID    string `json:"bank_branch_id,omitempty"` // 开户银行联行号
+	AccountNumber   string `json:"account_number"`           // 银行账号
 }
 
 // EcommerceQuerySettlement 查询结算信息
@@ -488,13 +488,13 @@ type EcommerceQuerySettlementResp struct {
 
 // ProfitSharingReturnOrders 分账回退
 type ProfitSharingReturnOrders struct {
-	SubMchid string `json:"sub_mchid"` // 二级商户号
-	//OrderID     string `json:"order_id"`      // 微信分账单号
-	OutOrderNo  string `json:"out_order_no"`  // 商户分账单号
-	OutReturnNo string `json:"out_return_no"` // 商户回退单号
-	ReturnMchid string `json:"return_mchid"`  // 回退商户号
-	Amount      int    `json:"amount"`        // 回退金额
-	Description string `json:"description"`   // 回退描述
+	SubMchid    string `json:"sub_mchid"`          // 二级商户号
+	OrderID     string `json:"order_id,omitempty"` // 微信分账单号
+	OutOrderNo  string `json:"out_order_no"`       // 商户分账单号
+	OutReturnNo string `json:"out_return_no"`      // 商户回退单号
+	ReturnMchid string `json:"return_mchid"`       // 回退商户号
+	Amount      int    `json:"amount"`             // 回退金额
+	Description string `json:"description"`        // 回退描述
 }
 
 // ProfitSharingReturnOrdersResp .

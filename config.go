@@ -1,4 +1,4 @@
-package config
+package weixin_shop_pay
 
 // Config 配置
 type Config struct {

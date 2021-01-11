@@ -1,25 +1,20 @@
-package refund
+package weixin_shop_pay
 
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-
-	"github.com/pingyeaa/weixin_shop_pay/params"
-
-	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
-// Refund 退款
-type Refund struct {
-	Config *config.Config
+// Pay 普通支付
+type Pay struct {
+	Config *Config
 }
 
-// Apply 申请退款
-func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
+// Order 下单
+func (c *Pay) Order(p *PayOrder) (*PayOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -28,8 +23,8 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 	}
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/refunds/apply"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	urlPath := "/v3/pay/partner/transactions/jsapi"
+	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +36,14 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 	}
 
 	// 验证接口是否错误
+	log.Println("响应结果", string(respData))
+	log.Println("响应头信息", resp.StatusCode, resp.Status)
 	if resp.StatusCode != 200 {
 		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
-	var output params.RefundApplyResp
+	var output PayOrderResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -54,12 +51,18 @@ func (c *Refund) Apply(p *params.RefundApply) (*params.RefundApplyResp, error) {
 	return &output, nil
 }
 
-// Query 退款查询
-func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
+// QueryOrderTransaction 微信订单查询
+func (c *Pay) QueryOrderTransaction(p *PayQueryOrderTransaction) (*PayQueryOrderResp, error) {
+
+	// 请求参数
+	dataJsonByte, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/refunds/id/" + p.RefundID
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	urlPath := "/v3/pay/partner/transactions/id/" + p.TransactionID
+	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +79,7 @@ func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 	}
 
 	log.Println(string(respData))
-	var output params.RefundQueryResp
+	var output PayQueryOrderResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -84,14 +87,12 @@ func (c *Refund) Query(p *params.RefundQuery) (*params.RefundQueryResp, error) {
 	return &output, nil
 }
 
-// QueryByRefundNo 退款查询
-func (c *Refund) QueryByRefundNo(p *params.RefundQueryByRefundNo) (*params.RefundQueryResp, error) {
+// QueryOrderOutTradeNo 商户订单查询
+func (c *Pay) QueryOrderOutTradeNo(p *PayQueryOrderOutTradeNo) (*PayQueryOrderResp, error) {
 
 	// 发起请求
-	// /v3/ecommerce/refunds/out-refund-no/{out_refund_no}
-	urlPath := "/v3/ecommerce/refunds/out-refund-no/" + p.OutRefundNo + "?sub_mchid=" + p.SubMchid
-
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	urlPath := "/v3/pay/partner/transactions/out-trade-no/" + p.OutTradeNo + fmt.Sprintf("?sp_mchid=%s&sub_mchid=%s", p.SpMchID, p.SubMchID)
+	resp, err := tool.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +109,7 @@ func (c *Refund) QueryByRefundNo(p *params.RefundQueryByRefundNo) (*params.Refun
 	}
 
 	log.Println(string(respData))
-	var output params.RefundQueryResp
+	var output PayQueryOrderResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err

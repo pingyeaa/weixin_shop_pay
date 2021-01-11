@@ -1,25 +1,19 @@
-package withdraw
+package weixin_shop_pay
 
 import (
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"log"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-
-	"github.com/pingyeaa/weixin_shop_pay/params"
-
-	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
 // Withdraw 普通支付
 type Withdraw struct {
-	Config *config.Config
+	Config *Config
 }
 
 // SubMch 二级商户余额提现
-func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp, error) {
+func (c *Withdraw) SubMch(p *WithdrawSubMch) (*WithdrawSubMchResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -28,7 +22,7 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp,
 	}
 	// 发起请求
 	urlPath := "/v3/ecommerce/fund/withdraw"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +39,7 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp,
 	}
 
 	log.Println(string(respData))
-	var output params.WithdrawSubMchResp
+	var output WithdrawSubMchResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -54,11 +48,11 @@ func (c *Withdraw) SubMch(p *params.WithdrawSubMch) (*params.WithdrawSubMchResp,
 }
 
 // SubMchQuery 二级商户提现状态查询
-func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*params.WithdrawSubMchQueryResp, error) {
+func (c *Withdraw) SubMchQuery(p *WithdrawSubMchQuery) (*WithdrawSubMchQueryResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/fund/withdraw/" + p.WithdrawID + "?sub_mchid=" + p.SubMchid
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +69,7 @@ func (c *Withdraw) SubMchQuery(p *params.WithdrawSubMchQuery) (*params.WithdrawS
 	}
 
 	log.Println(string(respData))
-	var output params.WithdrawSubMchQueryResp
+	var output WithdrawSubMchQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err

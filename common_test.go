@@ -1,21 +1,18 @@
-package common
+package weixin_shop_pay
 
 import (
 	"log"
 	"testing"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-	"github.com/pingyeaa/weixin_shop_pay/params"
 )
 
 func TestCommon_ImageUpload(t *testing.T) {
-	common := Common{Config: &config.Config{
+	common := Common{Config: &Config{
 		SpAppID:  "",
 		SpMchID:  "",
 		KeyPath:  "",
 		SerialNo: "",
 	}}
-	resp, err := common.ImageUpload(&params.CommonImageUpload{
+	resp, err := common.ImageUpload(&CommonImageUpload{
 		FilePath: "/Users/zhangyinuo/Golang/weixin-shop-pay/test.jpg",
 	})
 	if err != nil {
