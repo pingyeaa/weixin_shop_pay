@@ -2,7 +2,6 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 )
@@ -26,11 +25,6 @@ func (c *Balance) SubMch(p *BalanceSubMch) (*BalanceSubMchResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
 	}
 
 	// 赋值返回

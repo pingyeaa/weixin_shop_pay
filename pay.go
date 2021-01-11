@@ -2,7 +2,6 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -38,9 +37,6 @@ func (c *Pay) Order(p *PayOrder) (*PayOrderResp, error) {
 	// 验证接口是否错误
 	log.Println("响应结果", string(respData))
 	log.Println("响应头信息", resp.StatusCode, resp.Status)
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
-	}
 
 	log.Println(string(respData))
 	var output PayOrderResp
@@ -73,11 +69,6 @@ func (c *Pay) QueryOrderTransaction(p *PayQueryOrderTransaction) (*PayQueryOrder
 		return nil, err
 	}
 
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
-	}
-
 	log.Println(string(respData))
 	var output PayQueryOrderResp
 	err = json.Unmarshal(respData, &output)
@@ -101,11 +92,6 @@ func (c *Pay) QueryOrderOutTradeNo(p *PayQueryOrderOutTradeNo) (*PayQueryOrderRe
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

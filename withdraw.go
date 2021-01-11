@@ -2,7 +2,6 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 )
@@ -33,11 +32,6 @@ func (c *Withdraw) SubMch(p *WithdrawSubMch) (*WithdrawSubMchResp, error) {
 		return nil, err
 	}
 
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
-	}
-
 	log.Println(string(respData))
 	var output WithdrawSubMchResp
 	err = json.Unmarshal(respData, &output)
@@ -61,11 +55,6 @@ func (c *Withdraw) SubMchQuery(p *WithdrawSubMchQuery) (*WithdrawSubMchQueryResp
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

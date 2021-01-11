@@ -2,7 +2,6 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 )
@@ -34,11 +33,6 @@ func (c *Refund) Apply(p *RefundApply) (*RefundApplyResp, error) {
 		return nil, err
 	}
 
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
-	}
-
 	log.Println(string(respData))
 	var output RefundApplyResp
 	err = json.Unmarshal(respData, &output)
@@ -62,11 +56,6 @@ func (c *Refund) Query(p *RefundQuery) (*RefundQueryResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -94,11 +83,6 @@ func (c *Refund) QueryByRefundNo(p *RefundQueryByRefundNo) (*RefundQueryResp, er
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

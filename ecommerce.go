@@ -72,11 +72,6 @@ func (c *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
 		return nil, err
 	}
 
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
-	}
-
 	log.Println(string(respData))
 	var output EcommerceApplyResp
 	err = json.Unmarshal(respData, &output)
@@ -100,11 +95,6 @@ func (c *Ecommerce) ApplyQuery(p *EcommerceApplyQuery) (*EcommerceApplyQueryResp
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))
@@ -171,11 +161,6 @@ func (c *Ecommerce) QuerySettlement(p *EcommerceQuerySettlement) (*EcommerceQuer
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
 	}
 
 	log.Println(string(respData))

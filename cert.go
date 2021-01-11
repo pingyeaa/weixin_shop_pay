@@ -2,7 +2,6 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -27,11 +26,6 @@ func (c *Cert) Certificates() (*CertCertificatesResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
-	}
-
-	// 验证接口是否错误
-	if resp.StatusCode != 200 {
-		return nil, errors.New("平台证书接口请求异常：" + string(respData))
 	}
 
 	log.Println(string(respData))
