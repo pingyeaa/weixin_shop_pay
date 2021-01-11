@@ -9,15 +9,15 @@ import (
 
 // Cert 证书
 type Cert struct {
-	Config *Config
+	client *Client
 }
 
 // Certificates 平台证书列表
-func (c *Cert) Certificates() (*CertCertificatesResp, error) {
+func (t *Cert) Certificates() (*CertCertificatesResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/certificates"
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -26,6 +26,12 @@ func (c *Cert) Certificates() (*CertCertificatesResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -38,8 +44,8 @@ func (c *Cert) Certificates() (*CertCertificatesResp, error) {
 	output := CertCertificatesResp{}
 	for _, data := range cipherResp.Data {
 		log.Println(data.EncryptCertificate.Ciphertext)
-		log.Println(c.Config.SecretKey)
-		decryptContent, err := tool.AesDecrypt(data.EncryptCertificate.Ciphertext, c.Config.SecretKey, data.EncryptCertificate.Nonce, data.EncryptCertificate.AssociatedData)
+		log.Println(t.client.config.SecretKey)
+		decryptContent, err := tool.AesDecrypt(data.EncryptCertificate.Ciphertext, t.client.config.SecretKey, data.EncryptCertificate.Nonce, data.EncryptCertificate.AssociatedData)
 		if err != nil {
 			return nil, fmt.Errorf("证书结果解密失败：%s", err)
 		}

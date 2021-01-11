@@ -2,18 +2,17 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 )
 
 // ProfitSharing 分账
 type ProfitSharing struct {
-	Config *Config
+	client *Client
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitSharingReceiversAddResp, error) {
+func (t *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitSharingReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -23,7 +22,7 @@ func (c *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitShari
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/receivers/add"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -33,10 +32,11 @@ func (c *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitShari
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -49,7 +49,7 @@ func (c *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitShari
 }
 
 // Apply 请求分账
-func (c *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, error) {
+func (t *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, error) {
 
 	var err error
 
@@ -57,7 +57,7 @@ func (c *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, e
 	for index, receiver := range p.Receivers {
 		log.Println("ReceiverName加密", receiver.ReceiverName)
 		if receiver.ReceiverName != "" {
-			p.Receivers[index].ReceiverName, err = tool.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
+			p.Receivers[index].ReceiverName, err = tool.Encrypt(receiver.ReceiverName, t.client.config.PlatformPublicKey)
 			if err != nil {
 				return nil, err
 			}
@@ -72,7 +72,7 @@ func (c *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, e
 	log.Println("分账请求参数", string(dataJsonByte))
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		log.Println("分账错误", err.Error())
 		return nil, err
@@ -86,11 +86,11 @@ func (c *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, e
 		log.Println("读取分账结果错误", err.Error())
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		log.Println("分账结果", string(respData))
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -103,11 +103,11 @@ func (c *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, e
 }
 
 // Query 分账查询
-func (c *ProfitSharing) Query(p *ProfitSharingQuery) (*ProfitSharingQueryResp, error) {
+func (t *ProfitSharing) Query(p *ProfitSharingQuery) (*ProfitSharingQueryResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders"
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -116,6 +116,12 @@ func (c *ProfitSharing) Query(p *ProfitSharingQuery) (*ProfitSharingQueryResp, e
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -128,7 +134,7 @@ func (c *ProfitSharing) Query(p *ProfitSharingQuery) (*ProfitSharingQueryResp, e
 }
 
 // FinishOrder 完结分账
-func (c *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharingFinishOrderResp, error) {
+func (t *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharingFinishOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -138,7 +144,7 @@ func (c *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharing
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/finish-order"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -147,6 +153,12 @@ func (c *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharing
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -159,7 +171,7 @@ func (c *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharing
 }
 
 // ReturnOrders 分账回退
-func (c *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitSharingReturnOrdersResp, error) {
+func (t *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitSharingReturnOrdersResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -169,7 +181,7 @@ func (c *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitShari
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/returnorders"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -178,6 +190,12 @@ func (c *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitShari
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -190,11 +208,11 @@ func (c *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitShari
 }
 
 // ReturnOrdersQuery 分账回退查询
-func (c *ProfitSharing) ReturnOrdersQuery(p *ProfitSharingReturnOrdersQuery) (*ProfitSharingReturnOrdersQueryResp, error) {
+func (t *ProfitSharing) ReturnOrdersQuery(p *ProfitSharingReturnOrdersQuery) (*ProfitSharingReturnOrdersQueryResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid=" + p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -203,6 +221,12 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *ProfitSharingReturnOrdersQuery) (*P
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -215,11 +239,11 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *ProfitSharingReturnOrdersQuery) (*P
 }
 
 // LeftOrderAmount 查询订单剩余待分金额
-func (c *ProfitSharing) LeftOrderAmount(p *ProfitSharingLeftOrderAmount) (*ProfitSharingLeftOrderAmountResp, error) {
+func (t *ProfitSharing) LeftOrderAmount(p *ProfitSharingLeftOrderAmount) (*ProfitSharingLeftOrderAmountResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders/" + p.TransactionID + "/amounts"
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -228,6 +252,12 @@ func (c *ProfitSharing) LeftOrderAmount(p *ProfitSharingLeftOrderAmount) (*Profi
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))

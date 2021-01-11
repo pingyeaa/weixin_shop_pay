@@ -1,9 +1,12 @@
 package weixin_shop_pay
 
+import "encoding/json"
+
 // NewClient 创建客户端
-func NewClient(c *Config) *Client {
+func NewClient(config *Config) *Client {
 	return &Client{
-		c,
+		config:        config,
+		errorResponse: nil,
 	}
 }
 
@@ -14,45 +17,74 @@ func NewConfig() *Config {
 
 // Client 客户端
 type Client struct {
-	Config *Config
+	config        *Config
+	errorResponse *errorResponse
+}
+
+// HTTP CODE不等于200，或204时的错误返回参数
+type errorResponse struct {
+	Code    string
+	Message string
+	Detail  struct {
+		Field    string
+		Value    string
+		Issue    string
+		Location string
+	}
 }
 
 // Pay 普通支付
-func (c *Client) Pay() *Pay {
-	return &Pay{Config: c.Config}
+func (t *Client) Pay() *Pay {
+	return &Pay{client: t}
 }
 
 // Ecommerce 二级商户进件
-func (c *Client) Ecommerce() *Ecommerce {
-	return &Ecommerce{Config: c.Config}
+func (t *Client) Ecommerce() *Ecommerce {
+	return &Ecommerce{client: t}
 }
 
 // ProfitSharing 分账
-func (c *Client) ProfitSharing() *ProfitSharing {
-	return &ProfitSharing{Config: c.Config}
+func (t *Client) ProfitSharing() *ProfitSharing {
+	return &ProfitSharing{client: t}
 }
 
 // Refund 退款
-func (c *Client) Refund() *Refund {
-	return &Refund{Config: c.Config}
+func (t *Client) Refund() *Refund {
+	return &Refund{client: t}
 }
 
 // Balance 余额
-func (c *Client) Balance() *Balance {
-	return &Balance{Config: c.Config}
+func (t *Client) Balance() *Balance {
+	return &Balance{client: t}
 }
 
 // Withdraw 提现
-func (c *Client) Withdraw() *Withdraw {
-	return &Withdraw{Config: c.Config}
+func (t *Client) Withdraw() *Withdraw {
+	return &Withdraw{client: t}
 }
 
 // Common 公共接口
-func (c *Client) Common() *Common {
-	return &Common{Config: c.Config}
+func (t *Client) Common() *Common {
+	return &Common{client: t}
 }
 
 // Cert 证书
-func (c *Client) Cert() *Cert {
-	return &Cert{Config: c.Config}
+func (t *Client) Cert() *Cert {
+	return &Cert{client: t}
+}
+
+// setErrorResponse 设置错误响应信息
+func (t *Client) setErrorResponse(resp []byte) error {
+	var errorResponse *errorResponse
+	err := json.Unmarshal(resp, errorResponse)
+	if err != nil {
+		return err
+	}
+	t.errorResponse = errorResponse
+	return nil
+}
+
+// GetErrorResponse 获取微信错误响应信息
+func (t *Client) GetErrorResponse() *errorResponse {
+	return t.errorResponse
 }

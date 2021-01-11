@@ -2,52 +2,51 @@ package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
 )
 
 // Ecommerce 二级商户进件
 type Ecommerce struct {
-	Config *Config
+	client *Client
 }
 
 // Apply 二级商户进件
-func (c *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
+func (t *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
 
 	// 敏感信息加密
 	var err error
-	p.IDCardInfo.IDCardName, err = tool.Encrypt(p.IDCardInfo.IDCardName, c.Config.PlatformPublicKey)
+	p.IDCardInfo.IDCardName, err = tool.Encrypt(p.IDCardInfo.IDCardName, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	p.IDCardInfo.IDCardNumber, err = tool.Encrypt(p.IDCardInfo.IDCardNumber, c.Config.PlatformPublicKey)
+	p.IDCardInfo.IDCardNumber, err = tool.Encrypt(p.IDCardInfo.IDCardNumber, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	p.ContactInfo.ContactEmail, err = tool.Encrypt(p.ContactInfo.ContactEmail, c.Config.PlatformPublicKey)
+	p.ContactInfo.ContactEmail, err = tool.Encrypt(p.ContactInfo.ContactEmail, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	p.ContactInfo.ContactIDCardNumber, err = tool.Encrypt(p.ContactInfo.ContactIDCardNumber, c.Config.PlatformPublicKey)
+	p.ContactInfo.ContactIDCardNumber, err = tool.Encrypt(p.ContactInfo.ContactIDCardNumber, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	p.ContactInfo.MobilePhone, err = tool.Encrypt(p.ContactInfo.MobilePhone, c.Config.PlatformPublicKey)
+	p.ContactInfo.MobilePhone, err = tool.Encrypt(p.ContactInfo.MobilePhone, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
-	p.ContactInfo.ContactName, err = tool.Encrypt(p.ContactInfo.ContactName, c.Config.PlatformPublicKey)
+	p.ContactInfo.ContactName, err = tool.Encrypt(p.ContactInfo.ContactName, t.client.config.PlatformPublicKey)
 	if err != nil {
 		return nil, err
 	}
 
 	if p.AccountInfo != nil {
-		p.AccountInfo.AccountNumber, err = tool.Encrypt(p.AccountInfo.AccountNumber, c.Config.PlatformPublicKey)
+		p.AccountInfo.AccountNumber, err = tool.Encrypt(p.AccountInfo.AccountNumber, t.client.config.PlatformPublicKey)
 		if err != nil {
 			return nil, err
 		}
-		p.AccountInfo.AccountName, err = tool.Encrypt(p.AccountInfo.AccountName, c.Config.PlatformPublicKey)
+		p.AccountInfo.AccountName, err = tool.Encrypt(p.AccountInfo.AccountName, t.client.config.PlatformPublicKey)
 		if err != nil {
 			return nil, err
 		}
@@ -61,7 +60,7 @@ func (c *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/applyments/"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -70,6 +69,12 @@ func (c *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -82,11 +87,11 @@ func (c *Ecommerce) Apply(p *EcommerceApply) (*EcommerceApplyResp, error) {
 }
 
 // ApplyQuery 二级商户进件查询
-func (c *Ecommerce) ApplyQuery(p *EcommerceApplyQuery) (*EcommerceApplyQueryResp, error) {
+func (t *Ecommerce) ApplyQuery(p *EcommerceApplyQuery) (*EcommerceApplyQueryResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/applyments/" + p.ApplymentID
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -95,6 +100,12 @@ func (c *Ecommerce) ApplyQuery(p *EcommerceApplyQuery) (*EcommerceApplyQueryResp
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
@@ -107,10 +118,10 @@ func (c *Ecommerce) ApplyQuery(p *EcommerceApplyQuery) (*EcommerceApplyQueryResp
 }
 
 // ModifySettlement 修改结算账号
-func (c *Ecommerce) ModifySettlement(p *EcommerceModifySettlement) error {
+func (t *Ecommerce) ModifySettlement(p *EcommerceModifySettlement) error {
 	// 加密银行卡号
 	if p.AccountNumber != "" {
-		AccountNumberMD, err := tool.Encrypt(p.AccountNumber, c.Config.PlatformPublicKey)
+		AccountNumberMD, err := tool.Encrypt(p.AccountNumber, t.client.config.PlatformPublicKey)
 		if err != nil {
 			return err
 		}
@@ -129,7 +140,7 @@ func (c *Ecommerce) ModifySettlement(p *EcommerceModifySettlement) error {
 
 	// 发起请求
 	urlPath := "/v3/apply4sub/sub_merchants/" + p.SubMchid + "/modify-settlement"
-	resp, err := tool.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return err
 	}
@@ -139,20 +150,22 @@ func (c *Ecommerce) ModifySettlement(p *EcommerceModifySettlement) error {
 	if err != nil {
 		return err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 204 {
-		return errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 
 // QuerySettlement 查询结算信息
-func (c *Ecommerce) QuerySettlement(p *EcommerceQuerySettlement) (*EcommerceQuerySettlementResp, error) {
+func (t *Ecommerce) QuerySettlement(p *EcommerceQuerySettlement) (*EcommerceQuerySettlementResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/apply4sub/sub_merchants/" + p.SubMchid + "/settlement"
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -161,6 +174,12 @@ func (c *Ecommerce) QuerySettlement(p *EcommerceQuerySettlement) (*EcommerceQuer
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))

@@ -14,7 +14,7 @@ import (
 
 // Common 通用接口
 type Common struct {
-	Config *Config
+	client *Client
 }
 
 // ImageUpload 图片上传
@@ -22,7 +22,7 @@ func (t *Common) ImageUpload(p *CommonImageUpload) (*CommonImageUploadResp, erro
 	var res CommonImageUploadResp
 
 	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(t.Config.KeyPath)
+	keyByte, err := ioutil.ReadFile(t.client.config.KeyPath)
 	if err != nil {
 		return nil, fmt.Errorf("私钥文件读取失败：%s", err)
 	}
@@ -46,7 +46,7 @@ func (t *Common) ImageUpload(p *CommonImageUpload) (*CommonImageUploadResp, erro
 
 	// 签名
 	urlPath := "/v3/merchant/media/upload"
-	signature, err := tool.Signature("POST", urlPath, string(dataJsonByte), string(keyByte), t.Config.SpMchID, t.Config.SerialNo)
+	signature, err := tool.Signature("POST", urlPath, string(dataJsonByte), string(keyByte), t.client.config.SpMchID, t.client.config.SerialNo)
 	if err != nil {
 		return nil, err
 	}

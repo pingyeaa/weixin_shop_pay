@@ -8,15 +8,15 @@ import (
 
 // Balance 余额
 type Balance struct {
-	Config *Config
+	client *Client
 }
 
 // SubMch 二级商户余额查询
-func (c *Balance) SubMch(p *BalanceSubMch) (*BalanceSubMchResp, error) {
+func (t *Balance) SubMch(p *BalanceSubMch) (*BalanceSubMchResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/fund/balance/" + p.SubMchid
-	resp, err := tool.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -25,6 +25,12 @@ func (c *Balance) SubMch(p *BalanceSubMch) (*BalanceSubMchResp, error) {
 	respData, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// 赋值返回

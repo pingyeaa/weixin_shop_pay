@@ -322,12 +322,6 @@ type WithdrawSubMch struct {
 	BankMemo     string `json:"bank_memo"`      // 银行附言
 }
 
-// WithdrawSubMchQuery 二级商户提现单号查询
-type WithdrawSubMchQuery struct {
-	SubMchid   string `json:"sub_mchid"`   // 二级商户号
-	WithdrawID string `json:"withdraw_id"` // 微信支付提现单号
-}
-
 // ProfitSharingReceiversAddResp 订单查询返回参数
 type ProfitSharingReceiversAddResp struct {
 	Type    string `json:"type"`    // 接收方类型
@@ -579,16 +573,4 @@ type CipherResp struct {
 			Ciphertext     string `json:"ciphertext"`
 		} `json:"encrypt_certificate"`
 	} `json:"data"`
-}
-
-// HTTP CODE不等于200，或204时的错误返回参数
-type ErrorResponse struct {
-	Code    string
-	Message string
-	Detail  struct {
-		Field    string
-		Value    string
-		Issue    string
-		Location string
-	}
 }
