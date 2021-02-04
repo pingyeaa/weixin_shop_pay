@@ -1,6 +1,6 @@
-package config
+package weixin_shop_pay
 
-// Config 配置
+// config 配置
 type Config struct {
 	SpAppID           string // 服务商公众号ID
 	SpMchID           string // 服务商户号

@@ -1,4 +1,4 @@
-package common
+package weixin_shop_pay
 
 import (
 	"bytes"
@@ -10,24 +10,19 @@ import (
 	"os"
 	"path"
 	"strings"
-
-	"github.com/pingyeaa/weixin_shop_pay/tools"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-	"github.com/pingyeaa/weixin_shop_pay/params"
 )
 
 // Common 通用接口
 type Common struct {
-	Config *config.Config
+	client *Client
 }
 
 // ImageUpload 图片上传
-func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUploadResp, error) {
-	var res params.CommonImageUploadResp
+func (t *Common) ImageUpload(p *CommonImageUpload) (*CommonImageUploadResp, error) {
+	var res CommonImageUploadResp
 
 	// 读取私钥文件
-	keyByte, err := ioutil.ReadFile(t.Config.KeyPath)
+	keyByte, err := ioutil.ReadFile(t.client.config.KeyPath)
 	if err != nil {
 		return nil, fmt.Errorf("私钥文件读取失败：%s", err)
 	}
@@ -46,12 +41,12 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUp
 	// 计算文件哈希256
 	dataJsonByte, err := json.Marshal(map[string]string{
 		"filename": imageFile.Name(),
-		"sha256":   tools.GetFileHash(p.FilePath),
+		"sha256":   tool.GetFileHash(p.FilePath),
 	})
 
 	// 签名
 	urlPath := "/v3/merchant/media/upload"
-	signature, err := tools.Signature("POST", urlPath, string(dataJsonByte), string(keyByte), t.Config.SpMchID, t.Config.SerialNo)
+	signature, err := tool.Signature("POST", urlPath, string(dataJsonByte), string(keyByte), t.client.config.SpMchID, t.client.config.SerialNo)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +66,7 @@ func (t *Common) ImageUpload(p *params.CommonImageUpload) (*params.CommonImageUp
 		"--boundary--", string(dataJsonByte), imageFile.Name(), strings.Replace(imageFileExt, ".", "", -1), fileByte))
 
 	// 设置请求头
-	req, err := http.NewRequest("POST", config.Domain+urlPath, bytes.NewBuffer(requestBody))
+	req, err := http.NewRequest("POST", Domain+urlPath, bytes.NewBuffer(requestBody))
 	if err != nil {
 		return nil, err
 	}

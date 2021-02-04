@@ -1,25 +1,18 @@
-package profitsharing
+package weixin_shop_pay
 
 import (
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"log"
-
-	"github.com/pingyeaa/weixin_shop_pay/config"
-
-	"github.com/pingyeaa/weixin_shop_pay/params"
-
-	"github.com/pingyeaa/weixin_shop_pay/tools"
 )
 
 // ProfitSharing 分账
 type ProfitSharing struct {
-	Config *config.Config
+	client *Client
 }
 
 // ReceiversAdd 添加分账接收方
-func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*params.ProfitSharingReceiversAddResp, error) {
+func (t *ProfitSharing) ReceiversAdd(p *ProfitSharingReceiversAdd) (*ProfitSharingReceiversAddResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -29,7 +22,7 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/receivers/add"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -39,14 +32,15 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingReceiversAddResp
+	var output ProfitSharingReceiversAddResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -55,19 +49,18 @@ func (c *ProfitSharing) ReceiversAdd(p *params.ProfitSharingReceiversAdd) (*para
 }
 
 // Apply 请求分账
-func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitSharingApplyResp, error) {
+func (t *ProfitSharing) Apply(p *ProfitSharingApply) (*ProfitSharingApplyResp, error) {
 
 	var err error
 
 	// 加密接收方姓名
-
 	for index, receiver := range p.Receivers {
 		log.Println("ReceiverName加密", receiver.ReceiverName)
 		if receiver.ReceiverName != "" {
-		p.Receivers[index].ReceiverName, err = tools.Encrypt(receiver.ReceiverName, c.Config.PlatformPublicKey)
-		if err != nil {
-			return nil, err
-		}
+			p.Receivers[index].ReceiverName, err = tool.Encrypt(receiver.ReceiverName, t.client.config.PlatformPublicKey)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -76,10 +69,10 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 	if err != nil {
 		return nil, err
 	}
-
+	log.Println("分账请求参数", string(dataJsonByte))
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		log.Println("分账错误", err.Error())
 		return nil, err
@@ -93,15 +86,15 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 		log.Println("读取分账结果错误", err.Error())
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		log.Println("分账结果", string(respData))
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingApplyResp
+	var output ProfitSharingApplyResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -110,11 +103,11 @@ func (c *ProfitSharing) Apply(p *params.ProfitSharingApply) (*params.ProfitShari
 }
 
 // Query 分账查询
-func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitSharingQueryResp, error) {
+func (t *ProfitSharing) Query(p *ProfitSharingQuery) (*ProfitSharingQueryResp, error) {
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/orders"
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -124,14 +117,15 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitShari
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingQueryResp
+	var output ProfitSharingQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -140,7 +134,7 @@ func (c *ProfitSharing) Query(p *params.ProfitSharingQuery) (*params.ProfitShari
 }
 
 // FinishOrder 完结分账
-func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params.ProfitSharingFinishOrderResp, error) {
+func (t *ProfitSharing) FinishOrder(p *ProfitSharingFinishOrder) (*ProfitSharingFinishOrderResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -150,7 +144,7 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/finish-order"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -160,14 +154,15 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingFinishOrderResp
+	var output ProfitSharingFinishOrderResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -176,7 +171,7 @@ func (c *ProfitSharing) FinishOrder(p *params.ProfitSharingFinishOrder) (*params
 }
 
 // ReturnOrders 分账回退
-func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*params.ProfitSharingReturnOrdersResp, error) {
+func (t *ProfitSharing) ReturnOrders(p *ProfitSharingReturnOrders) (*ProfitSharingReturnOrdersResp, error) {
 
 	// 请求参数
 	dataJsonByte, err := json.Marshal(p)
@@ -186,7 +181,7 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 
 	// 发起请求
 	urlPath := "/v3/ecommerce/profitsharing/returnorders"
-	resp, err := tools.PostRequest(c.Config, urlPath, dataJsonByte)
+	resp, err := tool.PostRequest(t.client.config, urlPath, dataJsonByte)
 	if err != nil {
 		return nil, err
 	}
@@ -196,14 +191,15 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingReturnOrdersResp
+	var output ProfitSharingReturnOrdersResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -212,11 +208,11 @@ func (c *ProfitSharing) ReturnOrders(p *params.ProfitSharingReturnOrders) (*para
 }
 
 // ReturnOrdersQuery 分账回退查询
-func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQuery) (*params.ProfitSharingReturnOrdersQueryResp, error) {
+func (t *ProfitSharing) ReturnOrdersQuery(p *ProfitSharingReturnOrdersQuery) (*ProfitSharingReturnOrdersQueryResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid="+ p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	urlPath := "/v3/ecommerce/profitsharing/returnorders?sub_mchid=" + p.SubMchid + "&out_order_no=" + p.OutOrderNo + "&out_return_no=" + p.OutReturnNo
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -226,14 +222,15 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQue
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingReturnOrdersQueryResp
+	var output ProfitSharingReturnOrdersQueryResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
@@ -242,11 +239,11 @@ func (c *ProfitSharing) ReturnOrdersQuery(p *params.ProfitSharingReturnOrdersQue
 }
 
 // LeftOrderAmount 查询订单剩余待分金额
-func (c *ProfitSharing) LeftOrderAmount(p *params.ProfitSharingLeftOrderAmount) (*params.ProfitSharingLeftOrderAmountResp, error) {
+func (t *ProfitSharing) LeftOrderAmount(p *ProfitSharingLeftOrderAmount) (*ProfitSharingLeftOrderAmountResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/profitsharing/orders/"+ p.TransactionID +"/amounts"
-	resp, err := tools.GetRequest(c.Config, urlPath)
+	urlPath := "/v3/ecommerce/profitsharing/orders/" + p.TransactionID + "/amounts"
+	resp, err := tool.GetRequest(t.client.config, urlPath)
 	if err != nil {
 		return nil, err
 	}
@@ -256,14 +253,15 @@ func (c *ProfitSharing) LeftOrderAmount(p *params.ProfitSharingLeftOrderAmount) 
 	if err != nil {
 		return nil, err
 	}
-
-	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New(string(respData))
+		err := t.client.setErrorResponse(respData)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.Println(string(respData))
-	var output params.ProfitSharingLeftOrderAmountResp
+	var output ProfitSharingLeftOrderAmountResp
 	err = json.Unmarshal(respData, &output)
 	if err != nil {
 		return nil, err
