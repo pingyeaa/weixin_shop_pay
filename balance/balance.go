@@ -66,7 +66,7 @@ func (c *Balance) SubMchDate(p *params.BalanceSubMch) (*params.BalanceSubMchResp
 
 	// 验证接口是否错误
 	if resp.StatusCode != 200 {
-		return nil, errors.New("余额查询接口请求异常：" + string(respData))
+		return nil, errors.New("二级商户余额查询请求异常：" + string(respData))
 	}
 
 	// 赋值返回
