@@ -52,7 +52,7 @@ func (c *Balance) SubMch(p *params.BalanceSubMch) (*params.BalanceSubMchResp, er
 func (c *Balance) SubMchDate(p *params.BalanceSubMch) (*params.BalanceSubMchResp, error) {
 
 	// 发起请求
-	urlPath := "/v3/ecommerce/fund/balance/" + p.SubMchid + "?date=" + p.Date
+	urlPath := "/v3/ecommerce/fund/enddaybalance/" + p.SubMchid + "?date=" + p.Date
 	resp, err := tools.GetRequest(c.Config, urlPath)
 	if err != nil {
 		return nil, err
