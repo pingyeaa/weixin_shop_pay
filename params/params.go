@@ -304,6 +304,7 @@ type RefundQueryByRefundNo struct {
 // BalanceSubMch 二级商户余额查询
 type BalanceSubMch struct {
 	SubMchid string `json:"sub_mchid"` // 二级商户号
+	Date string `json:"date"` // 二级商户号
 }
 
 // BalanceSubMchResp 二级商户余额查询
